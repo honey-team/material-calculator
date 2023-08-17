@@ -1,2 +1,2 @@
 # material-calculator
-Matrial calculator for Windows using Flet Python
+Material calculator for Windows using Flet Python
