@@ -4,7 +4,7 @@ BUTTON_SIZE = 70
 SIZE = 87
 
 def app(page: ft.Page):
-    page.window_height = SIZE * 6
+    page.window_height = SIZE * 6 + 20
     page.window_width = SIZE * 4
     page.window_resizable = False
     page.window_maximizable = False
@@ -128,11 +128,19 @@ def app(page: ft.Page):
     def fun_point(e=None):
         if text.value != '0' and text.value != 'Ошибка':
             add_sym_to_txt('.')
+    
+    def _format_int(x: str) -> int | float:
+        res = float(x)
+
+        if int(res) == res:
+            res = str(int(res))
+
+        return res
 
     def fun_equal(e=None):
         if text.value != 'Ошибка':
             try:
-                text.value = str('%.5f' % float(eval(text.value)))
+                text.value = _format_int(str('%.5f' % float(eval(text.value))))
                 page.update()
             except ZeroDivisionError:
                 text.value = 'Ошибка'
@@ -145,9 +153,9 @@ def app(page: ft.Page):
     button_degree = gen_button('^', fun_degree)
     button_div = gen_button('÷', fun_div)
 
-    button_1 = gen_button('1', fun_1)
-    button_2 = gen_button('2', fun_2)
-    button_3 = gen_button('3', fun_3)
+    button_7 = gen_button('7', fun_7)
+    button_8 = gen_button('8', fun_8)
+    button_9 = gen_button('9', fun_9)
     button_mul = gen_button('×', fun_mul)
     
     button_4 = gen_button('4', fun_4)
@@ -155,9 +163,9 @@ def app(page: ft.Page):
     button_6 = gen_button('6', fun_6)
     button_sum = gen_button('+', fun_sum)
 
-    button_7 = gen_button('7', fun_7)
-    button_8 = gen_button('8', fun_8)
-    button_9 = gen_button('9', fun_9)
+    button_1 = gen_button('1', fun_1)
+    button_2 = gen_button('2', fun_2)
+    button_3 = gen_button('3', fun_3)
     button_sub = gen_button('-', fun_sub)
 
     button_0 = ft.FilledTonalButton('0', height=BUTTON_SIZE, width=BUTTON_SIZE * 2 + 10, on_click=fun_0)
@@ -191,9 +199,9 @@ def app(page: ft.Page):
 
     page.add(text,
              ft.Row([button_ac, button_plus_minus, button_degree, button_div]),
-             ft.Row([button_1, button_2, button_3, button_mul]),
+             ft.Row([button_7, button_8, button_9, button_mul]),
              ft.Row([button_4, button_5, button_6, button_sum]),
-             ft.Row([button_7, button_8, button_9, button_sub]),
+             ft.Row([button_1, button_2, button_3, button_sub]),
              ft.Row([button_0, button_point, button_equal]))
 
 if __name__ == '__main__':
