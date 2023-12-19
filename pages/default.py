@@ -1,5 +1,7 @@
 import flet as ft
 
+from pages.utils.memory import load, write
+
 BUTTON_SIZE = 70
 SIZE = 87
 
@@ -7,16 +9,27 @@ def default(page: ft.Page):
     def gen_button(text: str, click):
         return ft.FilledTonalButton(text, height=BUTTON_SIZE, width=BUTTON_SIZE, on_click=click)
     
+    def memory():
+        m = load()
+        
+        if m['page'] == 0:
+            query = str(text.value)
+            m["pages"]["default"]["query"] = query
+            write(m)
+    
     def add_sym_to_txt(sym: str):
         if text.value != 'Ошибка':
             text.value += sym
             page.update()
+        memory()
 
     def reset_txt():
         text.value = '0'
         page.update()
 
-    def fun_ac(e=None): reset_txt()
+    def fun_ac(e=None):
+        reset_txt()
+        memory()
 
     def fun_backspace():
         if len(text.value) != 1:
@@ -24,6 +37,7 @@ def default(page: ft.Page):
         else:
             text.value = '0'
         page.update()
+        memory()
 
     def fun_plus_minus(e=None):
         if text.value != '0' and text.value != 'Ошибка':
@@ -31,14 +45,17 @@ def default(page: ft.Page):
                 text.value = text.value.removeprefix('-')
             else:
                 text.value = '-' + text.value
+        memory()
 
     def fun_degree(e=None):
         if text.value != '0' and text.value != 'Ошибка':
             add_sym_to_txt('^')
+        memory()
 
     def fun_div(e=None):
         if text.value != '0' and text.value != 'Ошибка':
             add_sym_to_txt('/')
+        memory()
 
     def fun_1(e=None):
         if text.value != '0':
@@ -46,6 +63,7 @@ def default(page: ft.Page):
         else:
             text.value = '1'
             page.update()
+        memory()
 
     def fun_2(e=None):
         if text.value != '0':
@@ -53,6 +71,7 @@ def default(page: ft.Page):
         else:
             text.value = '2'
             page.update()
+        memory()
 
     def fun_3(e=None):
         if text.value != '0':
@@ -60,10 +79,12 @@ def default(page: ft.Page):
         else:
             text.value = '3'
             page.update()
+        memory()
 
     def fun_mul(e=None):
         if text.value != '0' and text.value != 'Ошибка':
             add_sym_to_txt('*')
+        memory()
 
     def fun_4(e=None):
         if text.value != '0':
@@ -71,6 +92,7 @@ def default(page: ft.Page):
         else:
             text.value = '4'
             page.update()
+        memory()
 
     def fun_5(e=None):
         if text.value != '0':
@@ -78,6 +100,7 @@ def default(page: ft.Page):
         else:
             text.value = '5'
             page.update()
+        memory()
 
     def fun_6(e=None):
         if text.value != '0':
@@ -85,10 +108,12 @@ def default(page: ft.Page):
         else:
             text.value = '6'
             page.update()
+        memory()
 
     def fun_sum(e=None):
         if text.value != '0' and text.value != 'Ошибка':
             add_sym_to_txt('+')
+        memory()
 
     def fun_7(e=None):
         if text.value != '0':
@@ -96,6 +121,7 @@ def default(page: ft.Page):
         else:
             text.value = '7'
             page.update()
+        memory()
 
     def fun_8(e=None):
         if text.value != '0':
@@ -103,6 +129,7 @@ def default(page: ft.Page):
         else:
             text.value = '8'
             page.update()
+        memory()
 
     def fun_9(e=None):
         if text.value != '0':
@@ -110,18 +137,22 @@ def default(page: ft.Page):
         else:
             text.value = '9'
             page.update()
+        memory()
 
     def fun_sub(e=None):
         if text.value != '0' and text.value != 'Ошибка':
             add_sym_to_txt('-')
+        memory()
 
     def fun_0(e=None):
         if text.value != '0':
             add_sym_to_txt('0')
+        memory()
 
     def fun_point(e=None):
         if text.value != '0' and text.value != 'Ошибка':
             add_sym_to_txt('.')
+        memory()
     
     def _format_int(x: str) -> int | float:
         res = float(x)
@@ -139,6 +170,7 @@ def default(page: ft.Page):
             except ZeroDivisionError:
                 text.value = 'Ошибка'
                 page.update()
+        memory()
 
     text = ft.Text('0', size=BUTTON_SIZE-23, text_align=ft.TextAlign.RIGHT, color='#1A2D45', width=SIZE * 4, font_family='sf pro text')
 
@@ -190,6 +222,10 @@ def default(page: ft.Page):
 
 
     page.on_keyboard_event = on_keyboard
+    page.update()
+    
+    m = load()
+    text.value = m["pages"]["default"]["query"]
 
     page.add(text,
              ft.Row([button_ac, button_plus_minus, button_degree, button_div]),

@@ -1,5 +1,9 @@
 import flet as ft
 import flet.canvas as cv
+from typing import Literal
+from pages.utils.memory import load, write
+
+FOCUSED_INPUT = None
 
 class Number:
     def __init__(self, num: str) -> None:
@@ -131,13 +135,28 @@ def triangle(page: ft.Page):
             
         update_canvas()
         page.update()
-            
+        m = load()
+        m['pages']['triangle']['a'] = a.value
+        m['pages']['triangle']['b'] = b.value
+        m['pages']['triangle']['c'] = c.value
+        write(m)
+        
+    def on_focus(e):
+        global FOCUSED_INPUT
+        FOCUSED_INPUT = e.control
+        
+        if FOCUSED_INPUT == c:
+            b.disabled = True
+        else:
+            b.disabled = False
+        page.update()
     
-    a = ft.TextField(label='a', value='3', on_change=change_abc, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))
+    m = load()
+    a = ft.TextField(label='a', value=m['pages']['triangle']['a'], on_change=change_abc, on_focus=on_focus, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))
     
-    b = ft.TextField(label='b', value='4', on_change=change_abc, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))
+    b = ft.TextField(label='b', value=m['pages']['triangle']['b'], on_change=change_abc, on_focus=on_focus, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))
     
-    c = ft.TextField(label='c', value='5', on_change=change_abc, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))
+    c = ft.TextField(label='c', value=m['pages']['triangle']['c'], on_change=change_abc, on_focus=on_focus, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))
     
     
     cv_a = float(a.value)
@@ -149,6 +168,33 @@ def triangle(page: ft.Page):
     
     if cv_a * k > (end_y - start_y):
         k = (end_y - start_y) / cv_a
+    
+    
+    def on_keyboard(e: ft.KeyboardEvent):
+        def change_input(x: Literal[-1, 1]):
+            if x == 1:
+                l = [a, b, c]
+            else:
+                l = [c, b, a]
+            index = l.index(FOCUSED_INPUT) + 1
+            
+            if index > 2:
+                return
+            else:
+                l[index].focus()
+        
+        match e.key:
+            case 'A': a.focus()
+            case 'B': b.focus()
+            case 'C': c.focus()
+            case 'Arrow Down': change_input(1)
+            case 'Arrow Up': change_input(-1)
+        
+        page.update()
+
+
+    page.on_keyboard_event = on_keyboard
+    page.update()
         
     
     cp = cv.Canvas(
