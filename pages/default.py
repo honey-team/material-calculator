@@ -5,7 +5,7 @@ from pages.utils.memory import load, write
 BUTTON_SIZE = 70
 SIZE = 87
 
-def default(page: ft.Page):
+def default(page: ft.Page) -> tuple[str, int]:
     def gen_button(text: str, click):
         return ft.FilledTonalButton(text, height=BUTTON_SIZE, width=BUTTON_SIZE, on_click=click)
     
@@ -233,3 +233,5 @@ def default(page: ft.Page):
              ft.Row([button_4, button_5, button_6, button_sum]),
              ft.Row([button_1, button_2, button_3, button_sub]),
              ft.Row([button_0, button_point, button_equal]))
+
+    return 'Обычный', 20
