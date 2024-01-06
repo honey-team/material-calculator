@@ -9,11 +9,12 @@ from pages.utils.memory import load, write
 from pages.conv_gen import conv_gen
 
 from pages.converters.weight import weight
+from pages.converters.length import length
 
 BUTTON_SIZE = 70
 SIZE = 87
 
-CONVERTERS = [weight]
+CONVERTERS = [weight, length]
 
 def app(page: ft.Page):
     page.window_height = SIZE * 6 + 60
@@ -58,6 +59,8 @@ def app(page: ft.Page):
                 l, s = right_triangle(page)
             case 4:
                 l, s = conv_gen(page, weight)
+            case 5:
+                l, s = conv_gen(page, length)
         page.appbar.title.value = l        
         page.appbar.title.size = s        
         
