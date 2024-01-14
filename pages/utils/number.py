@@ -31,7 +31,7 @@ def get_num(x: str) -> int | float:
     if '10**' in x:
         x, pow10 = x.split('**', 1)
         x = x.replace('10**', '')
-        return float(x) * (10 ** int(pow10))
+        return float(eval(x)) * (10 ** int(pow10))
     return float(x)
 
 class Number:
@@ -41,6 +41,11 @@ class Number:
             if 'e' in num:
                 x, pow10 = num.split('e', 1)
                 if pow10.startswith('+'): pow10 = pow10[1:]
+                
+                if pow10.startswith('0') or pow10.startswith('-0'):
+                    while pow10.startswith('0') or pow10.startswith('-0'):
+                        pow10 = pow10.replace('0', '', 1)
+                
                 self.num = f'{x} * 10**{pow10}'
             else:
                 if num == '-':
@@ -57,7 +62,7 @@ class Number:
         return math.floor(get_num(self.num))
     
     def __float__(self) -> float:
-        return float(self.num)
+        return float(get_num(self.num))
     
     def get(self, digits_after_comma: int = 0) -> str:
         if digits_after_comma <= 0:

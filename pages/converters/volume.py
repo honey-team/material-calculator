@@ -12,7 +12,7 @@ def volume():
     return {
         'name': 'Объём',
         'size': 20,
-        'image': 'icons/volume.png',
+        'image': 'icons/volume_outlined.png',
         'sel_image': 'icons/volume.png',
         'types': [
             'кубический миллиметр',

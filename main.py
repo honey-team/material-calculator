@@ -12,12 +12,13 @@ from pages.settings import settings
 
 from pages.converters.weight import weight
 from pages.converters.length import length
+from pages.converters.square import square
 from pages.converters.volume import volume
 
 BUTTON_SIZE = 70
 SIZE = 87
 
-CONVERTERS = [weight, length, volume]
+CONVERTERS = [weight, length, square, volume]
 
 def app(page: ft.Page):
     config = cload()
@@ -76,8 +77,11 @@ def app(page: ft.Page):
                 l, s = conv_gen(page, length)
             case 6:
                 page.scroll = None
-                l, s = conv_gen(page, volume)
+                l, s = conv_gen(page, square)
             case 7:
+                page.scroll = None
+                l, s = conv_gen(page, volume)
+            case 8:
                 page.scroll = ft.ScrollMode.AUTO
                 l, s = settings(page)
         page.appbar.title.value = l        
