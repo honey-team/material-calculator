@@ -1,7 +1,7 @@
 import flet as ft
 import flet.canvas as cv
 from typing import Literal
-from pages.utils.memory import load, write
+from pages.utils.memory import mload, mwrite
 from pages.utils.number import Number
 
 FOCUSED_INPUT = None
@@ -51,11 +51,11 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
             
         update_canvas()
         page.update()
-        m = load()
+        m = mload()
         m['pages']['triangle']['a'] = a.value
         m['pages']['triangle']['b'] = b.value
         m['pages']['triangle']['c'] = c.value
-        write(m)
+        mwrite(m)
         
     def on_focus(e):
         global FOCUSED_INPUT
@@ -67,7 +67,7 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
             b.disabled = False
         page.update()
     
-    m = load()
+    m = mload()
     a = ft.TextField(label='a', value=m['pages']['triangle']['a'], on_change=change_abc, on_focus=on_focus, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))
     
     b = ft.TextField(label='b', value=m['pages']['triangle']['b'], on_change=change_abc, on_focus=on_focus, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))

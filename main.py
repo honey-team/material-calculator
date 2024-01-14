@@ -5,23 +5,30 @@ from pages.default import default
 from pages.quadratic import quadratic
 from pages.amf import amf
 from pages.right_triangle import right_triangle
-from pages.utils.memory import load, write
+from pages.utils.memory import mload, mwrite
+from pages.utils.config import cload
 from pages.conv_gen import conv_gen
+from pages.settings import settings
 
 from pages.converters.weight import weight
 from pages.converters.length import length
+from pages.converters.volume import volume
 
 BUTTON_SIZE = 70
 SIZE = 87
 
-CONVERTERS = [weight, length]
+CONVERTERS = [weight, length, volume]
 
 def app(page: ft.Page):
+    config = cload()
+
     page.window_height = SIZE * 6 + 60
     page.window_width = SIZE * 4
     page.window_resizable = False
     page.window_maximizable = False
-    page.title = 'Material Calculator'
+    page.title = config['name']
+    page.theme = ft.Theme(config['theme']['bgcolor'])
+    page.theme_mode = ft.ThemeMode.LIGHT if config['theme']['mode'] == 'light' else ft.ThemeMode.DARK
     
     def open_drawer(*_):
         page.drawer.open = True
@@ -50,35 +57,46 @@ def app(page: ft.Page):
         page.controls.clear()
         match page.drawer.selected_index:
             case 0:
+                page.scroll = None
                 l, s = default(page)
             case 1:
+                page.scroll = None
                 l, s = quadratic(page)
             case 2:
+                page.scroll = None
                 l, s = amf(page)
             case 3:
+                page.scroll = None
                 l, s = right_triangle(page)
             case 4:
+                page.scroll = None
                 l, s = conv_gen(page, weight)
             case 5:
+                page.scroll = None
                 l, s = conv_gen(page, length)
+            case 6:
+                page.scroll = None
+                l, s = conv_gen(page, volume)
+            case 7:
+                page.scroll = ft.ScrollMode.AUTO
+                l, s = settings(page)
         page.appbar.title.value = l        
         page.appbar.title.size = s        
         
         page.update()
         
-        m = load()
+        m = mload()
         m['page'] = page.drawer.selected_index
-        write(m)
+        mwrite(m)
     
-    m = load()
+    m = mload()
     
     def DividerText(label: str, with_divider: bool = True) -> ft.Text:
         div_text = ft.Row([
             ft.Container(width=20),
-            ft.Text(label, size=16, weight=ft.FontWeight.W_600),
-            ft.Container(width=7)
+            ft.Text(label, size=17, weight=ft.FontWeight.W_600)
         ])
-        space = ft.Container(height=3)
+        space = ft.Container(height=10)
         if with_divider:
             return ft.Column(spacing=0, controls=[
                 space,
@@ -136,8 +154,17 @@ def app(page: ft.Page):
                 label=name,
                 icon_content=ft.Image(src=image, width=25, height=25),
                 selected_icon_content=ft.Image(src=sel_image, width=25, height=25)
-            ),
+            )
         )
+    page.drawer.controls.append(ft.Container(height=50))
+    page.drawer.controls.append(
+        ft.NavigationDrawerDestination(
+                label='Настройки',
+                icon=ft.icons.SETTINGS_OUTLINED,
+                selected_icon=ft.icons.SETTINGS
+            )
+    )
+    page.drawer.controls.append(ft.Container(height=25))
 
     change_page()
     page.update()

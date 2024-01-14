@@ -1,17 +1,17 @@
 import flet as ft
 
 from pages.utils.number import Number
-from pages.utils.memory import load, write
+from pages.utils.memory import mload, mwrite
 
 def quadratic(page: ft.Page) -> tuple[str, int]:
     txt = ft.Text('1x² + 2x + 3 = 0', size=20)
     
     def on_change(*_):
-        m = load()
+        m = mload()
         m['pages']['quadratic']['a'] = a.value
         m['pages']['quadratic']['b'] = b.value
         m['pages']['quadratic']['c'] = c.value
-        write(m)
+        mwrite(m)
         
         ia = Number(x1) if (x1 := a.value) else 0
         ib = Number(x2) if (x2 := b.value) else 0
@@ -52,7 +52,7 @@ x2 = {x2}
         
         page.update()
     
-    m = load()
+    m = mload()
     a = ft.TextField(label='a', on_change=on_change, value=m['pages']['quadratic']['a'], input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.-]", replacement_string=""))
     b = ft.TextField(label='b', on_change=on_change, value=m['pages']['quadratic']['b'], input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.-]", replacement_string=""))
     c = ft.TextField(label='c', on_change=on_change, value=m['pages']['quadratic']['c'], input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.-]", replacement_string=""))

@@ -1,6 +1,7 @@
 import flet as ft
 
-from pages.utils.memory import load, write
+from pages.utils.memory import mload, mwrite
+from pages.utils.config import cload
 
 BUTTON_SIZE = 70
 SIZE = 87
@@ -9,13 +10,35 @@ def default(page: ft.Page) -> tuple[str, int]:
     def gen_button(text: str, click):
         return ft.FilledTonalButton(text, height=BUTTON_SIZE, width=BUTTON_SIZE, on_click=click)
     
+    def get_color() -> str:
+        
+        colors = {
+            'light': {
+                'blue': '#39709c', #
+                'red': '#754349',
+                'green': '#3f6b4f',
+                'amber': '#8c7e3a',
+                'purple': '#613e76'
+            },
+            'dark': {
+                'blue': '#65aee9',
+                'red': '#da8087',
+                'green': '#85c796',
+                'amber': '#f0d369',
+                'purple': '#b576d0'
+            }
+        }
+        
+        c = cload()
+        return colors[c['theme']['mode']][c['theme']['bgcolor']]
+    
     def memory():
-        m = load()
+        m = mload()
         
         if m['page'] == 0:
             query = str(text.value)
             m["pages"]["default"]["query"] = query
-            write(m)
+            mwrite(m)
     
     def add_sym_to_txt(sym: str):
         if text.value != 'Ошибка':
@@ -172,7 +195,7 @@ def default(page: ft.Page) -> tuple[str, int]:
                 page.update()
         memory()
 
-    text = ft.Text('0', size=BUTTON_SIZE-23, text_align=ft.TextAlign.RIGHT, color='#1A2D45', width=SIZE * 4, font_family='sf pro text')
+    text = ft.Text('0', size=BUTTON_SIZE-23, text_align=ft.TextAlign.RIGHT, color=get_color(), width=SIZE * 4, font_family='sf pro text')
 
     button_ac = gen_button('AC', fun_ac)
     button_plus_minus = gen_button('±', fun_plus_minus)
@@ -224,7 +247,7 @@ def default(page: ft.Page) -> tuple[str, int]:
     page.on_keyboard_event = on_keyboard
     page.update()
     
-    m = load()
+    m = mload()
     text.value = m["pages"]["default"]["query"]
 
     page.add(text,

@@ -44,8 +44,8 @@ def length():
     return {
         'name': 'Длина',
         'size': 20,
-        'image': 'icons/weight_outlined.png',
-        'sel_image': 'icons/weight.png',
+        'image': 'icons/ruler.png',
+        'sel_image': 'icons/ruler.png',
         'types': [
             'миллиметр',
             'сантиметр',
