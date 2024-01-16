@@ -3,7 +3,6 @@ import flet as ft
 
 from pages.default import default
 from pages.quadratic import quadratic
-from pages.amf import amf
 from pages.right_triangle import right_triangle
 from pages.utils.memory import mload, mwrite
 from pages.utils.config import cload
@@ -14,11 +13,12 @@ from pages.converters.weight import weight
 from pages.converters.length import length
 from pages.converters.square import square
 from pages.converters.volume import volume
+from pages.converters.temperature import temperature
 
 BUTTON_SIZE = 70
 SIZE = 87
 
-CONVERTERS = [weight, length, square, volume]
+CONVERTERS = [weight, length, square, volume, temperature]
 
 def app(page: ft.Page):
     config = cload()
@@ -65,22 +65,22 @@ def app(page: ft.Page):
                 l, s = quadratic(page)
             case 2:
                 page.scroll = None
-                l, s = amf(page)
+                l, s = right_triangle(page)
             case 3:
                 page.scroll = None
-                l, s = right_triangle(page)
+                l, s = conv_gen(page, weight)
             case 4:
                 page.scroll = None
-                l, s = conv_gen(page, weight)
+                l, s = conv_gen(page, length)
             case 5:
                 page.scroll = None
-                l, s = conv_gen(page, length)
+                l, s = conv_gen(page, square)
             case 6:
                 page.scroll = None
-                l, s = conv_gen(page, square)
+                l, s = conv_gen(page, volume)
             case 7:
                 page.scroll = None
-                l, s = conv_gen(page, volume)
+                l, s = conv_gen(page, temperature)
             case 8:
                 page.scroll = ft.ScrollMode.AUTO
                 l, s = settings(page)
@@ -114,6 +114,14 @@ def app(page: ft.Page):
             space
         ])
     
+    def get_image_with_thememode(x: str):
+        c = cload()
+        if c['theme']['mode'] == 'light':
+            return x
+        else:
+            x = x.replace('.png', '')
+            return x + '_w.png'
+    
     page.drawer = ft.NavigationDrawer(
         controls=[
             ft.Container(height=12),
@@ -127,20 +135,14 @@ def app(page: ft.Page):
             DividerText('Уравнения'),
             ft.NavigationDrawerDestination(
                 label="Квадратное уравнение",
-                icon_content=ft.Image(src='icons/quadratic.png', width=25, height=25)
-            ),
-            
-            DividerText('Алгебра'),
-            ft.NavigationDrawerDestination(
-                label="Сокращенное уравнение (DEV)",
-                icon_content=ft.Image(src='icons/amf.png', width=25, height=25)
+                icon_content=ft.Image(src=get_image_with_thememode('icons/quadratic.png'), width=25, height=25)
             ),
             
             DividerText('Геометрия'),
             ft.NavigationDrawerDestination(
                 label="Прямоугольный треугольник",
-                icon_content=ft.Image(src='icons/right_triangle_outlined.png', width=25, height=25),
-                selected_icon_content=ft.Image(src='icons/right_triangle.png', width=25, height=25)
+                icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle_outlined.png'), width=25, height=25),
+                selected_icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle.png'), width=25, height=25)
             ),
             DividerText('Конвертеры'),
         ],
@@ -156,8 +158,8 @@ def app(page: ft.Page):
         page.drawer.controls.append(
             ft.NavigationDrawerDestination(
                 label=name,
-                icon_content=ft.Image(src=image, width=25, height=25),
-                selected_icon_content=ft.Image(src=sel_image, width=25, height=25)
+                icon_content=ft.Image(src=get_image_with_thememode(image), width=25, height=25),
+                selected_icon_content=ft.Image(src=get_image_with_thememode(sel_image), width=25, height=25)
             )
         )
     page.drawer.controls.append(ft.Container(height=50))
