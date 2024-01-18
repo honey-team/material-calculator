@@ -72,7 +72,7 @@ def default(page: ft.Page) -> tuple[str, int]:
 
     def fun_degree(e=None):
         if text.value != '0' and text.value != 'Ошибка':
-            add_sym_to_txt('^')
+            add_sym_to_txt('**')
         memory()
 
     def fun_div(e=None):

@@ -4,15 +4,19 @@
         "default": {
             "query": "0"
         },
-        "triangle": {
-            "a": "3",
-            "b": "4",
-            "c": "5"
+        "radical": {
+            "n": "2",
+            "a": "4"
         },
         "quadratic": {
             "a": "1",
             "b": "2",
             "c": "3"
+        },
+        "triangle": {
+            "a": "3",
+            "b": "4",
+            "c": "5"
         },
         "converters": {
             "weight": {

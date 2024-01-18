@@ -40,18 +40,22 @@ def settings(page: ft.Page):
         
         for i in page.drawer.controls:
             if isinstance(i, ft.NavigationDrawerDestination):
-                if i.selected_icon_content:
-                    if '_w' in i.selected_icon_content.src:
-                        i.selected_icon_content.src = i.selected_icon_content.src.replace('_w', '')
-                    else:
-                        x = i.selected_icon_content.src.replace('.png', '')
-                        i.selected_icon_content.src = x + '_w.png'
-                if i.icon_content:
-                    if '_w' in i.icon_content.src:
-                        i.icon_content.src = i.icon_content.src.replace('_w', '')
-                    else:
-                        x = i.icon_content.src.replace('.png', '')
-                        i.icon_content.src = x + '_w.png'
+                if config['theme']['mode'] == 'light':
+                    if i.selected_icon_content:
+                        if '_w' in i.selected_icon_content.src:
+                            i.selected_icon_content.src = i.selected_icon_content.src.replace('_w', '')
+                    if i.icon_content:
+                        if '_w' in i.icon_content.src:
+                            i.icon_content.src = i.icon_content.src.replace('_w', '')
+                else:
+                    if i.selected_icon_content:
+                        if not '_w' in i.selected_icon_content.src:
+                            x = i.selected_icon_content.src.replace('.png', '')
+                            i.selected_icon_content.src = x + '_w.png'
+                    if i.icon_content:
+                        if not '_w' in i.icon_content.src:
+                            x = i.icon_content.src.replace('.png', '')
+                            i.icon_content.src = x + '_w.png'
         
         page.update()
     

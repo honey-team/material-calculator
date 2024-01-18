@@ -2,8 +2,10 @@ import flet as ft
 
 
 from pages.default import default
+from pages.radical import radical
 from pages.quadratic import quadratic
 from pages.right_triangle import right_triangle
+from pages.trigonometry import trigonometry
 from pages.utils.memory import mload, mwrite
 from pages.utils.config import cload
 from pages.conv_gen import conv_gen
@@ -62,26 +64,32 @@ def app(page: ft.Page):
                 l, s = default(page)
             case 1:
                 page.scroll = None
-                l, s = quadratic(page)
+                l, s = radical(page)
             case 2:
                 page.scroll = None
-                l, s = right_triangle(page)
+                l, s = quadratic(page)
             case 3:
                 page.scroll = None
-                l, s = conv_gen(page, weight)
+                l, s = right_triangle(page)
             case 4:
                 page.scroll = None
-                l, s = conv_gen(page, length)
+                l, s = trigonometry(page)
             case 5:
                 page.scroll = None
-                l, s = conv_gen(page, square)
+                l, s = conv_gen(page, weight)
             case 6:
                 page.scroll = None
-                l, s = conv_gen(page, volume)
+                l, s = conv_gen(page, length)
             case 7:
                 page.scroll = None
-                l, s = conv_gen(page, temperature)
+                l, s = conv_gen(page, square)
             case 8:
+                page.scroll = None
+                l, s = conv_gen(page, volume)
+            case 9:
+                page.scroll = None
+                l, s = conv_gen(page, temperature)
+            case 10:
                 page.scroll = ft.ScrollMode.AUTO
                 l, s = settings(page)
         page.appbar.title.value = l        
@@ -132,7 +140,11 @@ def app(page: ft.Page):
                 selected_icon=ft.icons.CALCULATE,
             ),
             
-            DividerText('Уравнения'),
+            DividerText('Алгебра'),
+            ft.NavigationDrawerDestination(
+                label="Корень",
+                icon_content=ft.Image(src=get_image_with_thememode('icons/radical.png'), width=25, height=25)
+            ),
             ft.NavigationDrawerDestination(
                 label="Квадратное уравнение",
                 icon_content=ft.Image(src=get_image_with_thememode('icons/quadratic.png'), width=25, height=25)
@@ -144,6 +156,12 @@ def app(page: ft.Page):
                 icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle_outlined.png'), width=25, height=25),
                 selected_icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle.png'), width=25, height=25)
             ),
+            ft.NavigationDrawerDestination(
+                label="Тригонометрия (dev)",
+                icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle_outlined.png'), width=25, height=25),
+                selected_icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle.png'), width=25, height=25)
+            ),
+            
             DividerText('Конвертеры'),
         ],
         on_change=change_page,
