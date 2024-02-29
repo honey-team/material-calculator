@@ -14,6 +14,7 @@ def _format_end(x: str) -> str:
 def format_str(x: str) -> str:
     if '10**' in x:
         x2, pow10 = x.split('**', 1)
+        pow10 = pow10.replace('0', '⁰')
         pow10 = pow10.replace('1', '¹')
         pow10 = pow10.replace('2', '²')
         pow10 = pow10.replace('3', '³')
@@ -24,8 +25,10 @@ def format_str(x: str) -> str:
         pow10 = pow10.replace('8', '⁸')
         pow10 = pow10.replace('9', '⁹')
         pow10 = pow10.replace('-', '⁻')
-        return _format_end(x2 + pow10)
-    return _format_end(x)
+
+        x3, other = list(map(lambda x: x.replace(' ', ''), x2.split('*', 1)))
+        return f'{_format_end('%.5f' % float(x3))} * {other}{pow10}'
+    return _format_end('%.5f' % float(x))
 
 def get_num(x: str) -> int | float:
     if '10**' in x:
@@ -36,6 +39,7 @@ def get_num(x: str) -> int | float:
 
 class Number:
     def __init__(self, num: str) -> None:
+        num = str(num)
         self.num: str = '0'
         if num:
             if 'e' in num:
@@ -67,7 +71,7 @@ class Number:
     def get(self, digits_after_comma: int = 0) -> str:
         if digits_after_comma <= 0:
             return format_str(self.num)
-        s = f'%.{digits_after_comma}f' % self.num
+        s = f'%.{digits_after_comma}f' % float(self.num)
         return s
     
     def __repr__(self) -> str:

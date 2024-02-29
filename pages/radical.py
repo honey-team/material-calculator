@@ -19,8 +19,8 @@ def radical(page: ft.Page):
     m = mload()
     
     txt = ft.Text('ⁿ√a = 0', size=25)
-    n = ft.TextField(value=m['pages']['radical']['n'], label='n', input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.-]", replacement_string=""), on_change=on_change)
-    a = ft.TextField(value=m['pages']['radical']['a'], label='a', input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.-]", replacement_string=""), on_change=on_change)
+    n = ft.TextField(value=m['pages']['radical']['n'], label='n', input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""), on_change=on_change)
+    a = ft.TextField(value=m['pages']['radical']['a'], label='a', input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""), on_change=on_change)
     
     num = Number(a.value)
     _pow = 1 / Number(n.value)

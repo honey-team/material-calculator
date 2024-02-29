@@ -18,6 +18,12 @@
             "b": "4",
             "c": "5"
         },
+        "trigonometry": {
+            "a": "30",
+            "at": "deg",
+            "f": "cos",
+            "r": "0.5"
+        },
         "converters": {
             "weight": {
                 "a": "0",

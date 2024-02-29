@@ -3,6 +3,7 @@ import flet.canvas as cv
 from typing import Literal
 from pages.utils.memory import mload, mwrite
 from pages.utils.number import Number
+from pages.utils.colors import stroke_paint
 
 FOCUSED_INPUT = None
 
@@ -29,9 +30,9 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
         if cv_a * k > (end_y - start_y):
             k = (end_y - start_y) / cv_a
         cp.shapes = [
-            cv.Line(start_x, start_y, start_x, start_y + (cv_a * k)), # a
-            cv.Line(start_x, start_y + (cv_a * k), start_x + (cv_b * k), start_y + (cv_a * k)), # b
-            cv.Line(start_x, start_y, start_x + (cv_b * k), start_y + (cv_a * k)) # c
+            cv.Line(start_x, start_y, start_x, start_y + (cv_a * k), stroke_paint(page)), # a
+            cv.Line(start_x, start_y + (cv_a * k), start_x + (cv_b * k), start_y + (cv_a * k), stroke_paint(page)), # b
+            cv.Line(start_x, start_y, start_x + (cv_b * k), start_y + (cv_a * k), stroke_paint(page)) # c
         ]
         cp.update()
         
@@ -115,9 +116,9 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
     
     cp = cv.Canvas(
         [
-            cv.Line(start_x, start_y, start_x, start_y + (cv_a * k)), # a
-            cv.Line(start_x, start_y + (cv_a * k), start_x + (cv_b * k), start_y + (cv_a * k)), # b
-            cv.Line(start_x, start_y, start_x + (cv_b * k), start_y + (cv_a * k)) # c
+            cv.Line(start_x, start_y, start_x, start_y + (cv_a * k), stroke_paint(page)), # a
+            cv.Line(start_x, start_y + (cv_a * k), start_x + (cv_b * k), start_y + (cv_a * k), stroke_paint(page)), # b
+            cv.Line(start_x, start_y, start_x + (cv_b * k), start_y + (cv_a * k), stroke_paint(page)) # c
         ]
     )
     page.add(a, b, c, cp)

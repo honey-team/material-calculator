@@ -6,6 +6,7 @@ from pages.radical import radical
 from pages.quadratic import quadratic
 from pages.right_triangle import right_triangle
 from pages.trigonometry import trigonometry
+from pages.circle import circle
 from pages.utils.memory import mload, mwrite
 from pages.utils.config import cload
 from pages.conv_gen import conv_gen
@@ -58,39 +59,36 @@ def app(page: ft.Page):
         page.appbar.update()
         
         page.controls.clear()
+        
+        if page.drawer.selected_index == 11:
+            page.scroll = ft.ScrollMode.AUTO
+        else:
+            page.scroll = None
+        
         match page.drawer.selected_index:
             case 0:
-                page.scroll = None
                 l, s = default(page)
             case 1:
-                page.scroll = None
                 l, s = radical(page)
             case 2:
-                page.scroll = None
                 l, s = quadratic(page)
             case 3:
-                page.scroll = None
                 l, s = right_triangle(page)
             case 4:
-                page.scroll = None
                 l, s = trigonometry(page)
             case 5:
-                page.scroll = None
-                l, s = conv_gen(page, weight)
+                l, s = circle(page)
             case 6:
-                page.scroll = None
-                l, s = conv_gen(page, length)
+                l, s = conv_gen(page, weight)
             case 7:
-                page.scroll = None
-                l, s = conv_gen(page, square)
+                l, s = conv_gen(page, length)
             case 8:
-                page.scroll = None
-                l, s = conv_gen(page, volume)
+                l, s = conv_gen(page, square)
             case 9:
-                page.scroll = None
-                l, s = conv_gen(page, temperature)
+                l, s = conv_gen(page, volume)
             case 10:
-                page.scroll = ft.ScrollMode.AUTO
+                l, s = conv_gen(page, temperature)
+            case 11:
                 l, s = settings(page)
         page.appbar.title.value = l        
         page.appbar.title.size = s        
@@ -157,9 +155,13 @@ def app(page: ft.Page):
                 selected_icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle.png'), width=25, height=25)
             ),
             ft.NavigationDrawerDestination(
-                label="Тригонометрия (dev)",
-                icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle_outlined.png'), width=25, height=25),
-                selected_icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle.png'), width=25, height=25)
+                label="Тригонометрия",
+                icon_content=ft.Image(src=get_image_with_thememode('icons/trigonometry.png'), width=25, height=25)
+            ),
+            ft.NavigationDrawerDestination(
+                label="Окружность",
+                icon_content=ft.Image(src=get_image_with_thememode('icons/circle_outlined.png'), width=25, height=25),
+                selected_icon_content=ft.Image(src=get_image_with_thememode('icons/circle.png'), width=25, height=25)
             ),
             
             DividerText('Конвертеры'),
