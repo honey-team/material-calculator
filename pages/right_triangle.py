@@ -3,7 +3,7 @@ import flet.canvas as cv
 from typing import Literal
 from pages.utils.memory import mload, mwrite
 from pages.utils.number import Number
-from pages.utils.colors import stroke_paint
+from pages.utils.const import stroke_paint, INPUT_FILTER
 
 FOCUSED_INPUT = None
 
@@ -16,9 +16,6 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
     def update_canvas():
         cv_a = float(Number(a.value))
         cv_b = float(Number(b.value))
-        
-        start_x, end_x = 10, 300
-        start_y, end_y = 0, 350
         
         if cv_b:
             k = (end_x - start_x) / cv_b
@@ -45,42 +42,49 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
             c.value = ic.get(3)
         
         elif e.control == c:
-            i, ia = Number(c.value), Number(a.value)
-            if i.get() and i.get() >= ia.get():
-                ib = (i**2 - ia**2)**0.5
-                b.value = ib.get(3)
+            if FOCUSED_INPUT == a:
+                i, ia = Number(c.value), Number(a.value)
+                if i.get() and i.get() >= ia.get():
+                    ib = (i**2 - ia**2)**0.5
+                    b.value = ib.get(3)
+            elif FOCUSED_INPUT == b:
+                i, ib = Number(c.value), Number(b.value)
+                if i.get() and i.get() >= ib.get():
+                    ia = (i**2 - ib**2)**0.5
+                    a.value = ia.get(3)
             
         update_canvas()
         page.update()
         m = mload()
-        m['pages']['triangle']['a'] = a.value
-        m['pages']['triangle']['b'] = b.value
-        m['pages']['triangle']['c'] = c.value
+        m['pages']['right_triangle']['a'] = a.value
+        m['pages']['right_triangle']['b'] = b.value
+        m['pages']['right_triangle']['c'] = c.value
         mwrite(m)
         
     def on_focus(e):
         global FOCUSED_INPUT
-        FOCUSED_INPUT = e.control
         
-        if FOCUSED_INPUT == c:
-            b.disabled = True
+        if e.control == c:
+            FOCUSED_INPUT.disabled = True
         else:
+            FOCUSED_INPUT = e.control
+            a.disabled = False
             b.disabled = False
         page.update()
     
     m = mload()
-    a = ft.TextField(label='a', value=m['pages']['triangle']['a'], on_change=change_abc, on_focus=on_focus, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))
+    a = ft.TextField(label='a (катет слева)', value=m['pages']['right_triangle']['a'], on_change=change_abc, on_focus=on_focus, input_filter=INPUT_FILTER)
     
-    b = ft.TextField(label='b', value=m['pages']['triangle']['b'], on_change=change_abc, on_focus=on_focus, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))
+    b = ft.TextField(label='b (катет снизу)', value=m['pages']['right_triangle']['b'], on_change=change_abc, on_focus=on_focus, input_filter=INPUT_FILTER)
     
-    c = ft.TextField(label='c', value=m['pages']['triangle']['c'], on_change=change_abc, on_focus=on_focus, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.]", replacement_string=""))
+    c = ft.TextField(label='c (гипотенуза)', value=m['pages']['right_triangle']['c'], on_change=change_abc, on_focus=on_focus, input_filter=INPUT_FILTER)
     
     
     cv_a = float(a.value)
     cv_b = float(b.value)
     
-    start_x, end_x = 10, 300
-    start_y, end_y = 0, 350
+    start_x, end_x = 30, 300
+    start_y, end_y = 0, 220
     k = (end_x - start_x) / cv_b
     
     if cv_a * k > (end_y - start_y):

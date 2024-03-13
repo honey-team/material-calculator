@@ -37,6 +37,24 @@ def get_num(x: str) -> int | float:
         return float(eval(x)) * (10 ** int(pow10))
     return float(x)
 
+def format_point(x: str) -> str:
+    if '.' in x:
+        start, end = x.split('.', 1)
+        res_end = list(end)[::-1]
+        
+        for i in ''.join(list(end)[::-1]):
+            if i == '0':
+                res_end = res_end[1:]
+                continue
+            else:
+                break
+        
+        if len(res_end) == 0:
+            return start
+        return start + '.' + ''.join(res_end[::-1])
+    else:
+        return x
+
 class Number:
     def __init__(self, num: str) -> None:
         num = str(num)
@@ -55,10 +73,10 @@ class Number:
                 if num == '-':
                     self.num = '0'
                 else:
-                    self.num = num
+                    self.num = format_point(num)
     
     def __str__(self) -> int:
-        return format_str(self.num)
+        return self.get(5)
     
     def __int__(self) -> int:
         if self.num.endswith('.0'):
@@ -72,7 +90,7 @@ class Number:
         if digits_after_comma <= 0:
             return format_str(self.num)
         s = f'%.{digits_after_comma}f' % float(self.num)
-        return s
+        return format_str(format_point(s))
     
     def __repr__(self) -> str:
         return str(self)
@@ -127,5 +145,78 @@ class Number:
             return Number(str(float(other) ** float(self)))
         return Number(format_str(str(other ** float(self))))
     
+    def __eq__(self, __value: 'Number | int | float') -> bool:
+        if isinstance(__value, Number):
+            return float(self) == float(__value)
+        return float(self) == __value
+    
+    def __ne__(self, __value: 'Number | int | float') -> bool:
+        if isinstance(__value, Number):
+            return float(self) != float(__value)
+        return float(self) != __value
+    
+    def __lt__(self, __value: 'Number | int | float') -> bool:
+        if isinstance(__value, Number):
+            return float(self) < float(__value)
+        return float(self) < __value
+    
+    def __gt__(self, __value: 'Number | int | float') -> bool:
+        if isinstance(__value, Number):
+            return float(self) > float(__value)
+        return float(self) > __value
+    
+    def __le__(self, __value: 'Number | int | float') -> bool:
+        if isinstance(__value, Number):
+            return float(self) <= float(__value)
+        return float(self) <= __value
+    
+    def __ge__(self, __value: 'Number | int | float') -> bool:
+        if isinstance(__value, Number):
+            return float(self) >= float(__value)
+        return float(self) >= __value
+    
     def __abs__(self) -> int:
         return abs(self.num)
+
+
+def get_low(a: Number):
+    a = a.get(5)
+    replace_chars = {
+        '0': '₀',
+        '1': '₁',
+        '2': '₂',
+        '3': '₃',
+        '4': '₄',
+        '5': '₅',
+        '6': '₆',
+        '7': '₇',
+        '8': '₈',
+        '9': '₉',
+        '-': '₋'
+    }
+    
+    for key, value in replace_chars.items():
+        a = a.replace(key, value) 
+    
+    return a
+
+def get_up(a: Number):
+    a = a.get(5)
+    replace_chars = {
+        '0': '⁰',
+        '1': '¹',
+        '2': '²',
+        '3': '³',
+        '4': '⁴',
+        '5': '⁵',
+        '6': '⁶',
+        '7': '⁷',
+        '8': '⁸',
+        '9': '⁹',
+        '-': '⁻'
+    }
+    
+    for key, value in replace_chars.items():
+        a = a.replace(key, value) 
+    
+    return a

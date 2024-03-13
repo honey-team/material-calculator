@@ -3,9 +3,20 @@ import flet.canvas as cv
 from math import cos, sin, pi
 
 from pages.utils.number import Number
-from pages.utils.colors import stroke_paint
+from pages.utils.const import stroke_paint, INPUT_FILTER
+
+from pages.utils.memory import mload, mwrite
 
 def circle(page: ft.Page):
+    def update_memory(*_):
+        m = mload()
+        m['pages']['circle']['r'] = str(Number(r.value))
+        m['pages']['circle']['c'] = str(Number(C.value))
+        m['pages']['circle']['a'] = str(Number(a.value))
+        m['pages']['circle']['at'] = at.value
+        m['pages']['circle']['l'] = str(Number(l.value))
+        mwrite(m)
+    
     def update_canvas(*_):
         match at.value:
             case 'd':
@@ -31,10 +42,12 @@ def circle(page: ft.Page):
         l.value = R * Number(r.value)
         
         page.update()
+        update_memory()
     
     def change_C(*_):
         r.value = Number(C.value) / 2 / pi
         page.update()
+        update_memory()
         
     def change_a(*_):
         match at.value:
@@ -44,6 +57,16 @@ def circle(page: ft.Page):
                 R = Number(a.value)
         l.value = R * Number(r.value)
         update_canvas()
+        update_memory()
+    
+    def change_at(*_):
+        match at.value:
+            case 'd':
+                a.value = Number(a.value) * 180 / pi
+            case 'r':
+                a.value = Number(a.value) * pi / 180
+        page.update()
+        change_a()
     
     def change_l(*_):
         R = Number(l.value) / Number(r.value)
@@ -53,16 +76,18 @@ def circle(page: ft.Page):
             case 'r':
                 a.value = R
         update_canvas()
+        update_memory()
 
-    r = ft.TextField(label='радиус', on_change=change_r)
-    C = ft.TextField(label='длина', on_change=change_C)
-    a = ft.TextField(label='центральный угол', value='0', width=182, on_change=change_a)
-    at = ft.Dropdown(width=120, options=[
+    m = mload()
+    r = ft.TextField(value=m['pages']['circle']['r'], label='радиус', on_change=change_r, input_filter=INPUT_FILTER)
+    C = ft.TextField(value=m['pages']['circle']['c'], label='длина', on_change=change_C, input_filter=INPUT_FILTER)
+    a = ft.TextField(value=m['pages']['circle']['a'], label='центральный угол', width=182, on_change=change_a, input_filter=INPUT_FILTER)
+    at = ft.Dropdown(value=m['pages']['circle']['at'], width=120, options=[
         ft.dropdown.Option('d', 'градусов'),
         ft.dropdown.Option('r', 'радиан')
-    ], value='d', on_change=change_a
+    ], on_change=change_at
     )
-    l = ft.TextField(label='длина дуги', on_change=change_l)
+    l = ft.TextField(value=m['pages']['circle']['l'], label='длина дуги', on_change=change_l, input_filter=INPUT_FILTER)
     
     match at.value:
             case 'd':

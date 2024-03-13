@@ -2,8 +2,10 @@ import flet as ft
 
 
 from pages.default import default
+from pages.log import log
 from pages.radical import radical
 from pages.quadratic import quadratic
+from pages.degrad import degrad
 from pages.right_triangle import right_triangle
 from pages.trigonometry import trigonometry
 from pages.circle import circle
@@ -51,8 +53,6 @@ def app(page: ft.Page):
             if isinstance(i, ft.NavigationDrawerDestination):
                 only_destinations.append(i)
         
-        page.appbar.title.value = only_destinations[page.drawer.selected_index].label
-        
         page.drawer.open = False
         
         page.drawer.update()
@@ -60,36 +60,26 @@ def app(page: ft.Page):
         
         page.controls.clear()
         
-        if page.drawer.selected_index == 11:
+        l, s = 'error', 20
+        
+        FUNCTIONS = [default, radical, log, quadratic, degrad, right_triangle, trigonometry, circle]
+        FUNCTIONS_INDEXES = [0, 7]
+        
+        if page.drawer.selected_index in list(range(FUNCTIONS_INDEXES[0], FUNCTIONS_INDEXES[1] + 1)):
+            l, s = FUNCTIONS[page.drawer.selected_index](page)
+        
+        CONVERTERS_INDEXES = [FUNCTIONS_INDEXES[1] + 1, 12]
+        
+        if page.drawer.selected_index in list(range(CONVERTERS_INDEXES[0], CONVERTERS_INDEXES[1] + 1)):
+            l, s = conv_gen(page, CONVERTERS[page.drawer.selected_index - CONVERTERS_INDEXES[0]])
+        
+        SETTINGS_INDEX = CONVERTERS_INDEXES[1] + 1
+        if page.drawer.selected_index == SETTINGS_INDEX:
+            l, s = settings(page)
             page.scroll = ft.ScrollMode.AUTO
         else:
             page.scroll = None
-        
-        match page.drawer.selected_index:
-            case 0:
-                l, s = default(page)
-            case 1:
-                l, s = radical(page)
-            case 2:
-                l, s = quadratic(page)
-            case 3:
-                l, s = right_triangle(page)
-            case 4:
-                l, s = trigonometry(page)
-            case 5:
-                l, s = circle(page)
-            case 6:
-                l, s = conv_gen(page, weight)
-            case 7:
-                l, s = conv_gen(page, length)
-            case 8:
-                l, s = conv_gen(page, square)
-            case 9:
-                l, s = conv_gen(page, volume)
-            case 10:
-                l, s = conv_gen(page, temperature)
-            case 11:
-                l, s = settings(page)
+
         page.appbar.title.value = l        
         page.appbar.title.size = s        
         
@@ -128,10 +118,25 @@ def app(page: ft.Page):
             x = x.replace('.png', '')
             return x + '_w.png'
     
+    def Destination(label: str, icon: str, selected_icon: str = None):
+        if selected_icon:
+            return ft.NavigationDrawerDestination(
+                    label=label,
+                    icon_content=ft.Image(src=get_image_with_thememode(f'icons/{icon}.png'), width=25, height=25),
+                    selected_icon_content=ft.Image(src=get_image_with_thememode(f'icons/{selected_icon}.png'), width=25, height=25)
+                )
+        else:
+            return ft.NavigationDrawerDestination(
+                    label=label,
+                    icon_content=ft.Image(src=get_image_with_thememode(f'icons/{icon}.png'), width=25, height=25)
+                )
+    
     page.drawer = ft.NavigationDrawer(
         controls=[
             ft.Container(height=12),
+            
             DividerText('Калькуляторы', False),
+            
             ft.NavigationDrawerDestination(
                 label="Обычный",
                 icon=ft.icons.CALCULATE_OUTLINED,
@@ -139,30 +144,17 @@ def app(page: ft.Page):
             ),
             
             DividerText('Алгебра'),
-            ft.NavigationDrawerDestination(
-                label="Корень",
-                icon_content=ft.Image(src=get_image_with_thememode('icons/radical.png'), width=25, height=25)
-            ),
-            ft.NavigationDrawerDestination(
-                label="Квадратное уравнение",
-                icon_content=ft.Image(src=get_image_with_thememode('icons/quadratic.png'), width=25, height=25)
-            ),
+            
+            Destination('Корень', 'radical'),
+            Destination('Логарифм', 'log'),
+            Destination('Квадратное уравнение', 'quadratic'),
             
             DividerText('Геометрия'),
-            ft.NavigationDrawerDestination(
-                label="Прямоугольный треугольник",
-                icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle_outlined.png'), width=25, height=25),
-                selected_icon_content=ft.Image(src=get_image_with_thememode('icons/right_triangle.png'), width=25, height=25)
-            ),
-            ft.NavigationDrawerDestination(
-                label="Тригонометрия",
-                icon_content=ft.Image(src=get_image_with_thememode('icons/trigonometry.png'), width=25, height=25)
-            ),
-            ft.NavigationDrawerDestination(
-                label="Окружность",
-                icon_content=ft.Image(src=get_image_with_thememode('icons/circle_outlined.png'), width=25, height=25),
-                selected_icon_content=ft.Image(src=get_image_with_thememode('icons/circle.png'), width=25, height=25)
-            ),
+            
+            Destination('Конвертер углов', 'angle_outlined', 'angle'),
+            Destination('Прямоугольный треугольник', 'right_triangle_outlined', 'right_triangle'),
+            Destination('Тригонометрия', 'angle_outlined', 'angle'),
+            Destination('Окружность', 'circle_outlined', 'circle'),
             
             DividerText('Конвертеры'),
         ],
