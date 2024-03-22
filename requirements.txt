@@ -1,0 +1,2 @@
+flet # for UI
+sympy # for equations and simplification

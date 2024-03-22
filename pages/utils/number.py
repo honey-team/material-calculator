@@ -1,5 +1,6 @@
 import math
 
+
 def _format_end(x: str) -> str:
     if '.' in x:
         bc, ac = x.split('.', 1)
@@ -220,3 +221,39 @@ def get_up(a: Number):
         a = a.replace(key, value) 
     
     return a
+
+# Fix equations answers
+
+REG: dict[str, str] = {
+    '{x}': '{x}'
+}
+REP = {
+    'sqrt': '√',
+    'I': 'i',
+    '**': '^',
+}
+
+from re import compile, findall
+
+
+def check_for_reg(x: str) -> str:
+    res = x
+    for R, RN in REG.items():
+        mt = findall(compile(R.format(x='\d+')), res)
+        mt = [str(i) for i in mt]
+        xs = [findall(compile('\d+'), i)[0] for i in mt]
+        
+        for i, m in enumerate(mt):
+            res = res.replace(m, RN.format(x=xs[i]))
+    for k, v in REP.items():
+        res = res.replace(k, v)
+        
+    mt = findall(compile('[\w]\*[a-zA-z]'), res)
+    mt = [str(i) for i in mt]
+    for i in mt:
+        x, y = i.split('*', 1)
+        n = i
+        if not y.isdigit() and not '.' in y:
+            n = x + y
+        res = res.replace(i, n)
+    return res

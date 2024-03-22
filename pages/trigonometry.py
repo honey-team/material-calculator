@@ -1,74 +1,70 @@
-import flet as ft
 import math
-
 from typing import Literal
 
-from pages.utils.number import Number
+import flet as ft
+
 from pages.utils.memory import mload, mwrite
+from pages.utils.number import Number
+
 
 def trigonometry(page: ft.Page):
     LAST_NUMBERED: Literal[1, 2] = 1
-    
+
     def mem():
         m = mload()
-        m['pages']['trigonometry']['a'] = deg.value
-        m['pages']['trigonometry']['at'] = tdeg.value
-        m['pages']['trigonometry']['f'] = fun.value
-        m['pages']['trigonometry']['r'] = res_deg.value
-        
-        # "trigonometry": {
-        #     "a": "30",
-        #     "at": "deg",
-        #     "f": "cos",
-        #     "r": "0.5"
-        # },
-    
+        m["pages"]["trigonometry"]["a"] = deg.value
+        m["pages"]["trigonometry"]["at"] = tdeg.value
+        m["pages"]["trigonometry"]["f"] = fun.value
+        m["pages"]["trigonometry"]["r"] = res_deg.value
+
     def change_1(*_):
         global LAST_NUMBERED
         LAST_NUMBERED = 1
         a = Number(deg.value)
-        
-        if tdeg.value == 'deg':
+
+        if tdeg.value == "deg":
             rad = math.pi / 180 * a
         else:
             rad = a
-        
-        def ctg(x: float): return 1 / math.tan(x)
-        
+
+        def ctg(x: float):
+            return 1 / math.tan(x)
+
         def do_f(function, *args):
             return str(Number(function(*args)))
-        
+
         match fun.value:
-            case 'cos':
+            case "cos":
                 res_deg.value = do_f(math.cos, float(rad))
-            case 'sin':
+            case "sin":
                 res_deg.value = do_f(math.sin, float(rad))
-            case 'tg':
+            case "tg":
                 res_deg.value = do_f(math.tan, float(rad))
-            case 'ctg':
+            case "ctg":
                 res_deg.value = do_f(ctg, float(rad))
-        
+
         page.update()
-        
+
     def change_2(*_):
         global LAST_NUMBERED
         LAST_NUMBERED = 2
         a = Number(res_deg.value)
-        rad = Number('0')
-        
+        rad = Number("0")
+
         try:
             match fun.value:
-                case 'cos':
+                case "cos":
                     rad = Number(math.acos(float(a)))
-                case 'sin':
+                case "sin":
                     rad = Number(math.asin(float(a)))
-                case 'tg':
+                case "tg":
                     rad = Number(math.atan(float(a)))
-                case 'ctg':
+                case "ctg":
                     rad = Number(math.atan(float(1 / a)))
-        except ValueError: ...
+        except ValueError:
+            ...
 
-        if tdeg.value == 'deg':
+        if tdeg.value == "deg":
             deg.value = str(rad * 180 / math.pi)
         else:
             deg.value = str(rad)
@@ -84,25 +80,36 @@ def trigonometry(page: ft.Page):
 
     m = mload()
 
-    deg = ft.TextField(width=143, value=m['pages']['trigonometry']['a'], on_change=change_1, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""))
-    tdeg = ft.Dropdown(options=[
-        ft.dropdown.Option('deg', 'градусы'),
-        ft.dropdown.Option('rad', 'радианы')
-    ], value=m['pages']['trigonometry']['at'], width=160, on_change=change_dd)
-    
-    fun = ft.Dropdown(options=[
-            ft.dropdown.Option('cos', 'Конинус (cos)'),
-            ft.dropdown.Option('sin', 'Синус (sin)'),
-            ft.dropdown.Option('tg', 'Тангенс (tg)'),
-            ft.dropdown.Option('ctg', 'Котангенс (ctg)')
-        ], value=m['pages']['trigonometry']['f'], on_change=change_dd)
-    
-    res_deg = ft.TextField(value=m['pages']['trigonometry']['r'], on_change=change_2, input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""))
-    
-    page.add(
-        ft.Row([deg, tdeg]),
-        fun,
-        res_deg
+    deg = ft.TextField(
+        width=143,
+        value=m["pages"]["trigonometry"]["a"],
+        on_change=change_1,
+        input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""),
     )
-    
-    return 'Тригонометрия', 20
+    tdeg = ft.Dropdown(
+        options=[ft.dropdown.Option("deg", "градусы"), ft.dropdown.Option("rad", "радианы")],
+        value=m["pages"]["trigonometry"]["at"],
+        width=160,
+        on_change=change_dd,
+    )
+
+    fun = ft.Dropdown(
+        options=[
+            ft.dropdown.Option("cos", "Конинус (cos)"),
+            ft.dropdown.Option("sin", "Синус (sin)"),
+            ft.dropdown.Option("tg", "Тангенс (tg)"),
+            ft.dropdown.Option("ctg", "Котангенс (ctg)"),
+        ],
+        value=m["pages"]["trigonometry"]["f"],
+        on_change=change_dd,
+    )
+
+    res_deg = ft.TextField(
+        value=m["pages"]["trigonometry"]["r"],
+        on_change=change_2,
+        input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""),
+    )
+
+    page.add(ft.Row([deg, tdeg]), fun, res_deg)
+
+    return 20
