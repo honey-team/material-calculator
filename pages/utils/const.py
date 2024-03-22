@@ -1,4 +1,5 @@
 import flet as ft
+from pages.utils.config import cload
 
 
 def get_color_with_thememode(page: ft.Page):
@@ -7,6 +8,14 @@ def get_color_with_thememode(page: ft.Page):
             return "black"
         case ft.ThemeMode.DARK:
             return "white"
+
+def get_image_with_thememode(x: str):
+        c = cload()
+        if c["theme"]["mode"] == "light":
+            return x
+        else:
+            x = x.replace(".png", "")
+            return x + "_w.png"
 
 
 def stroke_paint(page):

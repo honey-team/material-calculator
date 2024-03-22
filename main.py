@@ -18,6 +18,7 @@ from pages.settings import settings
 from pages.simplify import simplify
 from pages.trigonometry import trigonometry
 from pages.utils.config import cload
+from pages.utils.const import get_image_with_thememode
 from pages.utils.memory import mload, mwrite
 
 FUNCTIONS = [default, radical, log, quadratic, equations, simplify, degrad, right_triangle, trigonometry, circle]
@@ -29,6 +30,8 @@ def app(page: ft.Page):
 
     page.window_height, page.window_width = 582, 348
     page.window_resizable, page.window_maximizable = False, False
+    page.window_title_bar_hidden = True
+    page.window_title_bar_buttons_hidden = True
     page.title = config["name"]
 
     # theme
@@ -38,10 +41,20 @@ def app(page: ft.Page):
     def open_drawer(*_):
         page.drawer.open = True
         page.drawer.update()
+    
+    def minimize(*_):
+        page.window_minimized = True
+        page.update()
 
     page.appbar = ft.AppBar(
-        leading=ft.IconButton(ft.icons.MENU_ROUNDED, on_click=open_drawer), title=ft.Text("Обычный", max_lines=1)
-    )
+            leading=ft.WindowDragArea(ft.IconButton(ft.icons.MENU_ROUNDED, on_click=open_drawer)),
+            title=ft.WindowDragArea(ft.Text("Обычный", max_lines=1)),
+            actions=[
+                ft.WindowDragArea(ft.IconButton(content=ft.Image(src=get_image_with_thememode('icons/minimize.png'), width=25, height=25), on_click=minimize)),
+                ft.WindowDragArea(ft.IconButton(ft.icons.CLOSE, on_click=lambda *_: page.window_close(), icon_color=ft.colors.WHITE if page.theme_mode == ft.ThemeMode.DARK else ft.colors.BLACK)),
+                ft.WindowDragArea(ft.Container(width=5))
+            ]
+        )
 
     def DividerText(label: str, with_divider: bool = True) -> ft.Text:
         div_text = ft.Row([ft.Container(width=20), ft.Text(label, size=17, weight=ft.FontWeight.W_600)])
@@ -58,14 +71,6 @@ def app(page: ft.Page):
                 ],
             )
         return ft.Column(spacing=0, controls=[div_text, space])
-
-    def get_image_with_thememode(x: str):
-        c = cload()
-        if c["theme"]["mode"] == "light":
-            return x
-        else:
-            x = x.replace(".png", "")
-            return x + "_w.png"
 
     def Destination(label: str, icon: str, selected_icon: str = None, image: bool = True):
         if image:

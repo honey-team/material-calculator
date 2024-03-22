@@ -3,6 +3,7 @@ import json
 import flet as ft
 
 from pages.utils.config import cload, cwrite
+from pages.utils.const import get_image_with_thememode
 from pages.utils.memory import mwrite
 
 
@@ -66,6 +67,16 @@ def settings(page: ft.Page):
                         if not "_w" in i.icon_content.src:
                             x = i.icon_content.src.replace(".png", "")
                             i.icon_content.src = x + "_w.png"
+ 
+        def minimize(*_):
+            page.window_minimized = True
+            page.update()
+
+        page.appbar.actions=[
+                ft.WindowDragArea(ft.IconButton(content=ft.Image(src=get_image_with_thememode('icons/minimize.png'), width=25, height=25), on_click=minimize)),
+                ft.WindowDragArea(ft.IconButton(ft.icons.CLOSE, on_click=lambda *_: page.window_close(), icon_color=ft.colors.WHITE if page.theme_mode == ft.ThemeMode.DARK else ft.colors.BLACK)),
+                ft.WindowDragArea(ft.Container(width=5))
+            ]
 
         page.update()
 
