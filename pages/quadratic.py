@@ -99,4 +99,4 @@ x₁ = {x1}; x₂ = {x2}
 
     page.add(txt, ft.Container(height=10), a, b, c, d, r)
 
-    return 20
+    return 15

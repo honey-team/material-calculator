@@ -1,5 +1,5 @@
 import math
-
+from typing import TypeVar
 
 def _format_end(x: str) -> str:
     if '.' in x:
@@ -201,8 +201,9 @@ def get_low(a: Number):
     
     return a
 
-def get_up(a: Number):
-    a = a.get(5)
+def get_up(a: Number | str):
+    if isinstance(a, Number):
+        a = a.get(5)
     replace_chars = {
         '0': '⁰',
         '1': '¹',
@@ -214,7 +215,32 @@ def get_up(a: Number):
         '7': '⁷',
         '8': '⁸',
         '9': '⁹',
-        '-': '⁻'
+        '-': '⁻',
+        'a': 'ᵃ',
+        'b': 'ᵇ',
+        'c': 'ᶜ',
+        'd': 'ᵈ',
+        'e': 'ᵉ',
+        'f': 'ᶠ',
+        'g': 'ᵍ',
+        'h': 'ʰ',
+        'i': 'ⁱ',
+        'j': 'ʲ',
+        'k': 'ᵏ',
+        'l': 'ˡ',
+        'm': 'ᵐ',
+        'n': 'ⁿ',
+        'o': 'ᵒ',
+        'p': 'ᵖ',
+        'r': 'ʳ',
+        's': 'ˢ',
+        't': 'ᵗ',
+        'u': 'ᵘ',
+        'v': 'ᵛ',
+        'w': 'ʷ',
+        'x': 'ˣ',
+        'y': 'ʸ',
+        'z': 'ᶻ'
     }
     
     for key, value in replace_chars.items():
@@ -235,20 +261,41 @@ REP = {
 
 from re import compile, findall
 
+N = TypeVar('N', bound=str)
+E = TypeVar('E', bound=str)
+
+def to_standard_form(num_str: str) -> tuple[N, E]:
+    num = float(num_str.replace(',', ''))
+    exp = 0
+    while num >= 10:
+        num /= 10
+        exp += 1
+    while num < 1:
+        num *= 10
+        exp -= 1
+
+    return f'{num:.3f}', str(exp)
+
 
 def check_for_reg(x: str) -> str:
     res = x
     for R, RN in REG.items():
-        mt = findall(compile(R.format(x='\d+')), res)
+        mt = findall(compile(R.format(x='[\d\.\d]+')), res)
         mt = [str(i) for i in mt]
-        xs = [findall(compile('\d+'), i)[0] for i in mt]
+        xs = [findall(compile('[\d\.\d]+'), i)[0] for i in mt]
         
         for i, m in enumerate(mt):
             res = res.replace(m, RN.format(x=xs[i]))
     for k, v in REP.items():
         res = res.replace(k, v)
         
-    mt = findall(compile('[\w]\*[a-zA-z]'), res)
+    mt = findall(compile('[\w\^\.]+\^[\w\^\.]+'), res)
+    mt = [str(i) for i in mt]
+    for i in mt:
+        first, second = i.split('^', 1)
+        res = res.replace(i, f'{first}{get_up(second)}')
+        
+    mt = findall(compile('[\w√]+\*[a-zA-z]'), res)
     mt = [str(i) for i in mt]
     for i in mt:
         x, y = i.split('*', 1)
@@ -256,4 +303,26 @@ def check_for_reg(x: str) -> str:
         if not y.isdigit() and not '.' in y:
             n = x + y
         res = res.replace(i, n)
-    return res
+        
+    # round
+    try:
+        mt = findall('[\w\.]', res)
+        mt = [str(i) for i in mt]
+        for i in mt:
+            if i.isdigit() and float(i) != int(i):
+                res = res.replace(i, str(round(float(i), 5)))
+                
+        if not res:
+            res = '0'
+        
+        res = res.replace('(', '').replace(')', '').replace(' ', '')
+
+        res = f'{float(res.replace(',', '')):,}'
+
+        if len(res) > 12:
+            first, second = to_standard_form(res)
+            return f'{_format_end(first)} * 10{get_up(second)}'
+        R = _format_end(res.replace(',', ''))
+        return f'{float(R):,}' if float(R) != int(R.replace('.', '')) else f'{int(R):,}'
+    except ValueError:
+        return res.replace(',', '')

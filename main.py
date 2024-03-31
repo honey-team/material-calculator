@@ -128,8 +128,8 @@ def app(page: ft.Page):
         else:
             page.scroll = None
 
-        page.appbar.title.value = only_destinations[page.drawer.selected_index].label
-        page.appbar.title.size = s
+        page.appbar.title.content.value = only_destinations[page.drawer.selected_index].label
+        page.appbar.title.content.size = s
 
         page.update()
 

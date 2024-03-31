@@ -4,5 +4,8 @@
     "theme": {
         "mode": "light",
         "bgcolor": "blue"
+    },
+    "equations": {
+        "digits_in_result": false
     }
 }

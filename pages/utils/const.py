@@ -1,6 +1,6 @@
 import flet as ft
 from pages.utils.config import cload
-
+from typing import Protocol
 
 def get_color_with_thememode(page: ft.Page):
     match page.theme_mode:
@@ -23,3 +23,7 @@ def stroke_paint(page):
 
 
 INPUT_FILTER = ft.InputFilter(allow=True, regex_string=r"[0-9.]", replacement_string="")
+
+
+class SupportsStr(Protocol):
+    def __str__(self) -> str: ...

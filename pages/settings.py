@@ -98,6 +98,11 @@ def settings(page: ft.Page):
     def reset_all(*_):
         reset_memory()
         reset_config()
+    
+    def change_digits_in_result(e):
+        c = cload()
+        c['equations']['digits_in_result'] = e.control.value
+        cwrite(c)
 
     space = ft.Container(height=10)
     space2 = ft.Container(height=20)
@@ -144,6 +149,10 @@ def settings(page: ft.Page):
                         )
                     ]
                 ),
+                space2,
+                ft.Text('Уравнения', size=25, weight=ft.FontWeight.W_600),
+                space2,
+                ft.Checkbox(label='Число в ответе', value=config['equations']['digits_in_result'], on_change=change_digits_in_result),
                 space2,
                 ft.Text("Сброс", size=25, weight=ft.FontWeight.W_600),
                 space2,

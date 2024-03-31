@@ -1,2 +1,3 @@
 flet # for UI
 sympy # for equations and simplification
+pyperclip # for copying to clipboard
