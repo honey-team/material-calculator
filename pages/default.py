@@ -2,7 +2,7 @@ from typing import Callable, Literal, TypeAlias
 import flet as ft
 
 from pages.utils.config import cload
-from pages.utils.const import SupportsStr
+from pages.utils.const import S, SupportsStr
 from pages.utils.memory import mload, mwrite
 from pages.utils.number import check_for_reg
 
@@ -14,7 +14,7 @@ OPERATION: TypeAlias = Literal['+', '-', '*', '/', '**']
 def default(page: ft.Page):
     def generate_button(text: str, click: Callable[..., None], size: int = 20):
         return ft.FilledTonalButton(
-            content=ft.Text(text, size=size),
+            content=ft.Text(S(text), size=size),
             height=BUTTON_SIZE,
             width=BUTTON_SIZE, 
             on_click=click
@@ -22,7 +22,7 @@ def default(page: ft.Page):
     
     def generate_0_button(text: str, click: Callable[..., None], size: int = 20):
         return ft.FilledTonalButton(
-            content=ft.Text(text, size=size),
+            content=ft.Text(S(text), size=size),
             height=BUTTON_SIZE,
             width=BUTTON_SIZE * 2 + 10,
             on_click=click
@@ -130,7 +130,7 @@ def default(page: ft.Page):
     def fun_ac(*_):
         unhighlight_operation_button()
         memory('')
-        query.value = '0'
+        query.value = S('0')
         page.update()
     
     def fun_pm(*_):
@@ -227,7 +227,7 @@ def default(page: ft.Page):
     
     def fun_eq(*_):
         r = eq()
-        memory(r)
+        # memory(r)
         query.value = check_for_reg(r)
         page.update()
     
@@ -258,15 +258,15 @@ def default(page: ft.Page):
     btn_4 = generate_button("4", fun_4)
     btn_5 = generate_button("5", fun_5)
     btn_6 = generate_button("6", fun_6)
-    btn_sum = generate_button("+", fun_sum)
+    btn_sum = generate_button("?", fun_sum)
 
     btn_1 = generate_button("1", fun_1)
     btn_2 = generate_button("2", fun_2)
     btn_3 = generate_button("3", fun_3)
-    btn_sub = generate_button("-", fun_sub)
+    btn_sub = generate_button("?", fun_sub)
 
     btn_0 = generate_0_button("0", fun_0)
-    btn_po = generate_button(".", fun_po)
+    btn_po = generate_button("?", fun_po)
     btn_eq = generate_button("=", fun_eq)
     
     def on_keyboard(e: ft.KeyboardEvent):

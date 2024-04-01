@@ -3,7 +3,7 @@ from math import cos, pi, sin
 import flet as ft
 import flet.canvas as cv
 
-from pages.utils.const import INPUT_FILTER, stroke_paint
+from pages.utils.const import INPUT_FILTER, S, stroke_paint
 from pages.utils.memory import mload, mwrite
 from pages.utils.number import Number
 
@@ -49,8 +49,8 @@ def degrad(page: ft.Page):
         ]
 
     m = mload()
-    d = ft.TextField(value=m["pages"]["degrad"]["d"], label="Градусы", input_filter=INPUT_FILTER, on_change=change_d)
-    r = ft.TextField(value=m["pages"]["degrad"]["r"], label="Радианы", input_filter=INPUT_FILTER, on_change=change_r)
+    d = ft.TextField(value=m["pages"]["degrad"]["d"], label=S("Градусы"), input_filter=INPUT_FILTER, on_change=change_d)
+    r = ft.TextField(value=m["pages"]["degrad"]["r"], label=S("Радианы"), input_filter=INPUT_FILTER, on_change=change_r)
 
     R = Number(r.value)
     r1 = 140

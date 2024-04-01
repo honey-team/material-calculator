@@ -3,7 +3,7 @@ from typing import Literal
 import flet as ft
 import flet.canvas as cv
 
-from pages.utils.const import INPUT_FILTER, stroke_paint
+from pages.utils.const import INPUT_FILTER, S, stroke_paint
 from pages.utils.memory import mload, mwrite
 from pages.utils.number import Number
 
@@ -76,7 +76,7 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
 
     m = mload()
     a = ft.TextField(
-        label="a (катет слева)",
+        label=S("a (катет слева)"),
         value=m["pages"]["right_triangle"]["a"],
         on_change=change_abc,
         on_focus=on_focus,
@@ -84,7 +84,7 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
     )
 
     b = ft.TextField(
-        label="b (катет снизу)",
+        label=S("b (катет снизу)"),
         value=m["pages"]["right_triangle"]["b"],
         on_change=change_abc,
         on_focus=on_focus,
@@ -92,7 +92,7 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
     )
 
     c = ft.TextField(
-        label="c (гипотенуза)",
+        label=S("c (гипотенуза)"),
         value=m["pages"]["right_triangle"]["c"],
         on_change=change_abc,
         on_focus=on_focus,

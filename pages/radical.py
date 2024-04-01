@@ -1,5 +1,6 @@
 import flet as ft
 
+from pages.utils.const import S
 from pages.utils.memory import mload, mwrite
 from pages.utils.number import Number, get_up
 
@@ -18,7 +19,7 @@ def radical(page: ft.Page):
         except ZeroDivisionError:
             num = None
 
-        txt.value = TXT.format(n=get_up(Number(n.value)), a=Number(a.value), r=Number(num) if num else "?")
+        txt.value = TXT.format(n=S(get_up(Number(n.value))), a=S(Number(a.value)), r=S(Number(num)) if num else "?")
         page.update()
 
     m = mload()
@@ -27,13 +28,13 @@ def radical(page: ft.Page):
 
     n = ft.TextField(
         value=m["pages"]["radical"]["n"],
-        label="n",
+        label=S("n"),
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""),
         on_change=on_change,
     )
     a = ft.TextField(
         value=m["pages"]["radical"]["a"],
-        label="a",
+        label=S("a"),
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""),
         on_change=on_change,
     )
@@ -45,9 +46,8 @@ def radical(page: ft.Page):
     except ZeroDivisionError:
         num = None
 
-    txt = ft.Text(TXT.format(n=get_up(Number(n.value)), a=Number(a.value), r=Number(num) if num else "?"), size=25)
-
-    page.update()
+    txt = ft.Text('', size=25)
+    on_change()
 
     page.add(txt, ft.Container(height=40), n, a)
 

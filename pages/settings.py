@@ -3,7 +3,7 @@ import json
 import flet as ft
 
 from pages.utils.config import cload, cwrite
-from pages.utils.const import get_image_with_thememode
+from pages.utils.const import S, get_image_with_thememode
 from pages.utils.memory import mwrite
 
 
@@ -109,16 +109,16 @@ def settings(page: ft.Page):
 
     ctm = config["theme"]["mode"]
     theme_mode = ft.Switch(
-        label="Светлая тема" if ctm == "light" else "Тёмная тема", value=ctm == "dark", on_change=change_theme_mode
+        label=S("Светлая тема") if ctm == "light" else S("Тёмная тема"), value=ctm == "dark", on_change=change_theme_mode
     )
 
     page.add(
         ft.ListView(
             [
-                ft.Text(config["name"], size=35),
-                ft.Text(config["version"], size=20),
+                ft.Text(S(config["name"]), size=35),
+                ft.Text(S(config["version"]), size=20),
                 space2,
-                ft.Text("Темы", size=25, weight=ft.FontWeight.W_600),
+                ft.Text(S("Темы"), size=25, weight=ft.FontWeight.W_600),
                 space2,
                 theme_mode,
                 ft.Row(
@@ -150,17 +150,17 @@ def settings(page: ft.Page):
                     ]
                 ),
                 space2,
-                ft.Text('Уравнения', size=25, weight=ft.FontWeight.W_600),
+                ft.Text(S('Уравнения'), size=25, weight=ft.FontWeight.W_600),
                 space2,
-                ft.Checkbox(label='Число в ответе', value=config['equations']['digits_in_result'], on_change=change_digits_in_result),
+                ft.Checkbox(label=S('Число в ответе'), value=config['equations']['digits_in_result'], on_change=change_digits_in_result),
                 space2,
-                ft.Text("Сброс", size=25, weight=ft.FontWeight.W_600),
+                ft.Text(S("Сброс"), size=25, weight=ft.FontWeight.W_600),
                 space2,
-                ft.FilledTonalButton("Сбросить память", on_click=reset_memory),
+                ft.FilledTonalButton(S("Сбросить память"), on_click=reset_memory),
                 space,
-                ft.FilledTonalButton("Сбросить настройки", on_click=reset_config),
+                ft.FilledTonalButton(S("Сбросить настройки"), on_click=reset_config),
                 space,
-                ft.FilledTonalButton("Сбросить всё", on_click=reset_all),
+                ft.FilledTonalButton(S("Сбросить всё"), on_click=reset_all),
             ]
         )
     )

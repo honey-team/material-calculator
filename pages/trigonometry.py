@@ -3,6 +3,7 @@ from typing import Literal
 
 import flet as ft
 
+from pages.utils.const import S
 from pages.utils.memory import mload, mwrite
 from pages.utils.number import Number
 
@@ -87,7 +88,7 @@ def trigonometry(page: ft.Page):
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""),
     )
     tdeg = ft.Dropdown(
-        options=[ft.dropdown.Option("deg", "градусы"), ft.dropdown.Option("rad", "радианы")],
+        options=[ft.dropdown.Option("deg", S("градусы")), ft.dropdown.Option("rad", S("радианы"))],
         value=m["pages"]["trigonometry"]["at"],
         width=160,
         on_change=change_dd,
@@ -95,10 +96,10 @@ def trigonometry(page: ft.Page):
 
     fun = ft.Dropdown(
         options=[
-            ft.dropdown.Option("cos", "Конинус (cos)"),
-            ft.dropdown.Option("sin", "Синус (sin)"),
-            ft.dropdown.Option("tg", "Тангенс (tg)"),
-            ft.dropdown.Option("ctg", "Котангенс (ctg)"),
+            ft.dropdown.Option("cos", S("Конинус (cos)")),
+            ft.dropdown.Option("sin", S("Синус (sin)")),
+            ft.dropdown.Option("tg", S("Тангенс (tg)")),
+            ft.dropdown.Option("ctg", S("Котангенс (ctg)")),
         ],
         value=m["pages"]["trigonometry"]["f"],
         on_change=change_dd,

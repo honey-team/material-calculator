@@ -1,6 +1,8 @@
 import math
 from typing import TypeVar
 
+from pages.utils.const import S
+
 def _format_end(x: str) -> str:
     if '.' in x:
         bc, ac = x.split('.', 1)
@@ -323,6 +325,6 @@ def check_for_reg(x: str) -> str:
             first, second = to_standard_form(res)
             return f'{_format_end(first)} * 10{get_up(second)}'
         R = _format_end(res.replace(',', ''))
-        return f'{float(R):,}' if float(R) != int(R.replace('.', '')) else f'{int(R):,}'
+        return S(f'{float(R):,}' if float(R) != int(R.replace('.', '')) else f'{int(R):,}')
     except ValueError:
-        return res.replace(',', '')
+        return S(res.replace(',', ''))

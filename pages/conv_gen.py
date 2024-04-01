@@ -2,6 +2,7 @@ from typing import Any, Callable, Literal
 
 import flet as ft
 
+from pages.utils.const import S
 from pages.utils.memory import mload, mwrite
 from pages.utils.number import Number
 
@@ -44,10 +45,10 @@ def conv_gen(page: ft.Page, fun: Callable[..., dict[str, Any]]):
         read_only=True,
     )
     at = ft.Dropdown(
-        options=[ft.dropdown.Option(i) for i in info["types"]], on_change=on_change, value=info["types"][get_type("a")]
+        options=[ft.dropdown.Option(i, S(i)) for i in info["types"]], on_change=on_change, value=info["types"][get_type("a")]
     )
     bt = ft.Dropdown(
-        options=[ft.dropdown.Option(i) for i in info["types"]], on_change=on_change, value=info["types"][get_type("b")]
+        options=[ft.dropdown.Option(i, S(i)) for i in info["types"]], on_change=on_change, value=info["types"][get_type("b")]
     )
     page.add(x, at, ft.Divider(thickness=2), r, bt)
 

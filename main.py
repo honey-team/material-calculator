@@ -18,7 +18,7 @@ from pages.settings import settings
 from pages.simplify import simplify
 from pages.trigonometry import trigonometry
 from pages.utils.config import cload
-from pages.utils.const import get_image_with_thememode
+from pages.utils.const import get_image_with_thememode, S
 from pages.utils.memory import mload, mwrite
 
 FUNCTIONS = [default, radical, log, quadratic, equations, simplify, degrad, right_triangle, trigonometry, circle]
@@ -140,25 +140,25 @@ def app(page: ft.Page):
     page.drawer = ft.NavigationDrawer(
         controls=[
             ft.Container(height=12),
-            DividerText("Калькуляторы", False),
+            DividerText(S("Калькуляторы"), False),
             ###
-            Destination("Обычный", ft.icons.CALCULATE_OUTLINED, ft.icons.CALCULATE, image=False),
+            Destination(S("Обычный"), ft.icons.CALCULATE_OUTLINED, ft.icons.CALCULATE, image=False),
             ###
-            DividerText("Алгебра"),
+            DividerText(S("Алгебра")),
             ###
-            Destination("Корень", "radical"),
-            Destination("Логарифм", "log"),
-            Destination("Квадратное уравнение", "quadratic"),
-            Destination("Уравнение", "x"),
-            Destination("Упростить (beta)", "a"),
+            Destination(S("Корень"), "radical"),
+            Destination(S("Логарифм"), "log"),
+            Destination(S("Квадратное уравнение"), "quadratic"),
+            Destination(S("Уравнение"), "x"),
+            Destination(S("Упростить (beta)"), "a"),
             ###
-            DividerText("Геометрия"),
+            DividerText(S("Геометрия")),
             ###
-            Destination("Конвертер углов", "angle_outlined", "angle"),
-            Destination("Прямоугольный треугольник", "right_triangle_outlined", "right_triangle"),
-            Destination("Тригонометрия", "angle_outlined", "angle"),
-            Destination("Окружность", "circle_outlined", "circle"),
-            DividerText("Конвертеры"),
+            Destination(S("Конвертер углов"), "angle_outlined", "angle"),
+            Destination(S("Прямоугольный треугольник"), "right_triangle_outlined", "right_triangle"),
+            Destination(S("Тригонометрия"), "angle_outlined", "angle"),
+            Destination(S("Окружность"), "circle_outlined", "circle"),
+            DividerText(S("Конвертеры")),
         ],
         on_change=change_page,
         selected_index=m["page"],
@@ -166,10 +166,10 @@ def app(page: ft.Page):
 
     for i in CONVERTERS:
         info = i()
-        page.drawer.controls.append(Destination(info["name"], info["image"], info["sel_image"]))
+        page.drawer.controls.append(Destination(S(info["name"]), info["image"], info["sel_image"]))
 
     page.drawer.controls.append(ft.Container(height=50))
-    page.drawer.controls.append(Destination("Настройки", ft.icons.SETTINGS_OUTLINED, ft.icons.SETTINGS, image=False))
+    page.drawer.controls.append(Destination(S("Настройки"), ft.icons.SETTINGS_OUTLINED, ft.icons.SETTINGS, image=False))
     page.drawer.controls.append(ft.Container(height=25))
 
     change_page()

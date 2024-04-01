@@ -5,6 +5,7 @@ from sympy.parsing.sympy_parser import implicit_multiplication_application, stan
 from pyperclip import copy as pc_copy
 
 from pages.utils.config import cload
+from pages.utils.const import S
 from pages.utils.memory import mload, mwrite
 from pages.utils.number import Number, check_for_reg, get_low
 
@@ -75,9 +76,8 @@ def equations(page: ft.Page):
         return 445 - width
 
     m = mload()
-    a = ft.TextField(value=m["pages"]["equations"]["a"], label="Уравнение", on_change=update_memory)
+    a = ft.TextField(value=m["pages"]["equations"]["a"], label=S("Уравнение"), on_change=update_memory)
     r = ft.Text(value='', size=20)
-    solve_ev()
     
     def copy_all(*_):
         pc_copy(r.value)
@@ -86,7 +86,10 @@ def equations(page: ft.Page):
     c = ft.FloatingActionButton(icon=ft.icons.COPY, on_click=copy_all)
     
     row = ft.Row([s, c], vertical_alignment=ft.CrossAxisAlignment.END, alignment=ft.MainAxisAlignment.END, height=get_height_of_row())
-
+    
+    solve_ev()
+    
+    
     page.add(a, ft.Text("Корни", size=20), ft.SelectionArea(content=r), row)
 
     return 20

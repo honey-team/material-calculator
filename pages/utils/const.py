@@ -27,3 +27,14 @@ INPUT_FILTER = ft.InputFilter(allow=True, regex_string=r"[0-9.]", replacement_st
 
 class SupportsStr(Protocol):
     def __str__(self) -> str: ...
+
+# 1st april
+def S(x: SupportsStr) -> str:
+    x = str(x)
+    res = ''
+    for i in x:
+        if not i in [' ', '(', ')', '.', ',', '-', '+', '*', '/', '√']:
+            res += '?'
+        else:
+            res += i
+    return res
