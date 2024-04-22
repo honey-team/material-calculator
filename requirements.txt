@@ -1,3 +1,7 @@
 flet # for UI
+ujson # for decoding and encoding json objects
+
 sympy # for equations and simplification
 pyperclip # for copying to clipboard
+
+# Recomended Python version is 3.12.1

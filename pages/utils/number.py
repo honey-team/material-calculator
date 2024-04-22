@@ -280,24 +280,27 @@ def to_standard_form(num_str: str) -> tuple[N, E]:
 
 
 def check_for_reg(x: str) -> str:
+    def F(reg: str, str: str):
+        return findall(compile(reg), str)
+    
     res = x
     for R, RN in REG.items():
-        mt = findall(compile(R.format(x='[\d\.\d]+')), res)
+        mt = F(R.format(x=r'[\d\.\d]+'), res)
         mt = [str(i) for i in mt]
-        xs = [findall(compile('[\d\.\d]+'), i)[0] for i in mt]
+        xs = [F(r'[\d\.\d]+', i)[0] for i in mt]
         
         for i, m in enumerate(mt):
             res = res.replace(m, RN.format(x=xs[i]))
     for k, v in REP.items():
         res = res.replace(k, v)
         
-    mt = findall(compile('[\w\^\.]+\^[\w\^\.]+'), res)
+    mt = F(r'[\w\^\.]+\^[\w\^\.]+', res)
     mt = [str(i) for i in mt]
     for i in mt:
         first, second = i.split('^', 1)
         res = res.replace(i, f'{first}{get_up(second)}')
         
-    mt = findall(compile('[\w√]+\*[a-zA-z]'), res)
+    mt = F(r'[\w√]+\*[a-zA-z]', res)
     mt = [str(i) for i in mt]
     for i in mt:
         x, y = i.split('*', 1)
@@ -308,7 +311,7 @@ def check_for_reg(x: str) -> str:
         
     # round
     try:
-        mt = findall('[\w\.]', res)
+        mt = F(r'[\w\.]', res)
         mt = [str(i) for i in mt]
         for i in mt:
             if i.isdigit() and float(i) != int(i):

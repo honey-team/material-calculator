@@ -86,12 +86,14 @@ def trigonometry(page: ft.Page):
         value=m["pages"]["trigonometry"]["a"],
         on_change=change_1,
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""),
+        border_color='primary,0.5'
     )
     tdeg = ft.Dropdown(
         options=[ft.dropdown.Option("deg", S("градусы")), ft.dropdown.Option("rad", S("радианы"))],
         value=m["pages"]["trigonometry"]["at"],
         width=160,
         on_change=change_dd,
+        border_color='primary,0.5'
     )
 
     fun = ft.Dropdown(
@@ -103,12 +105,14 @@ def trigonometry(page: ft.Page):
         ],
         value=m["pages"]["trigonometry"]["f"],
         on_change=change_dd,
+        border_color='primary,0.5'
     )
 
     res_deg = ft.TextField(
         value=m["pages"]["trigonometry"]["r"],
         on_change=change_2,
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""),
+        border_color='primary,0.5'
     )
 
     page.add(ft.Row([deg, tdeg]), fun, res_deg)

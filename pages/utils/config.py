@@ -1,4 +1,4 @@
-import json
+import ujson as json
 
 ConfigPath = "config.json"
 
@@ -11,4 +11,4 @@ def cload() -> dict:
 
 def cwrite(config: dict):
     with open(ConfigPath, "w", encoding="utf-8") as ConfigFile:
-        ConfigFile.write(json.dumps(config, skipkeys=True))
+        ConfigFile.write(json.dumps(config))

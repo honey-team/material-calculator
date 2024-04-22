@@ -81,6 +81,7 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
         on_change=change_abc,
         on_focus=on_focus,
         input_filter=INPUT_FILTER,
+        border_color='primary,0.5'
     )
 
     b = ft.TextField(
@@ -89,6 +90,7 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
         on_change=change_abc,
         on_focus=on_focus,
         input_filter=INPUT_FILTER,
+        border_color='primary,0.5'
     )
 
     c = ft.TextField(
@@ -97,6 +99,7 @@ def right_triangle(page: ft.Page) -> tuple[str, int]:
         on_change=change_abc,
         on_focus=on_focus,
         input_filter=INPUT_FILTER,
+        border_color='primary,0.5'
     )
 
     cv_a = float(a.value)

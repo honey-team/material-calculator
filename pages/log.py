@@ -44,10 +44,10 @@ def log(page: ft.Page):
 
     m = mload()
     a = ft.TextField(
-        value=m["pages"]["log"]["a"], label=S("Основание логарифма"), on_change=change_args, input_filter=INPUT_FILTER
+        value=m["pages"]["log"]["a"], label=S("Основание логарифма"), on_change=change_args, input_filter=INPUT_FILTER, border_color='primary,0.5'
     )
     b = ft.TextField(
-        value=m["pages"]["log"]["b"], label=S("Число логарифма"), on_change=change_args, input_filter=INPUT_FILTER
+        value=m["pages"]["log"]["b"], label=S("Число логарифма"), on_change=change_args, input_filter=INPUT_FILTER, border_color='primary,0.5'
     )
 
     log = ft.Text(S(LOG.format(a=get_low(Number(a.value)), b=Number(b.value), x="?")), size=20)

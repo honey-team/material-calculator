@@ -18,7 +18,7 @@ from pages.settings import settings
 from pages.simplify import simplify
 from pages.trigonometry import trigonometry
 from pages.utils.config import cload
-from pages.utils.const import get_image_with_thememode, S
+from pages.utils.const import get_image_with_thememode, S, get_bgcolor_for_window_with_thememode
 from pages.utils.memory import mload, mwrite
 
 FUNCTIONS = [default, radical, log, quadratic, equations, simplify, degrad, right_triangle, trigonometry, circle]
@@ -37,6 +37,9 @@ def app(page: ft.Page):
     # theme
     page.theme = ft.Theme(config["theme"]["bgcolor"])
     page.theme_mode = ft.ThemeMode.LIGHT if config["theme"]["mode"] == "light" else ft.ThemeMode.DARK
+    page.bgcolor = get_bgcolor_for_window_with_thememode(page)
+    page.window_bgcolor = ft.colors.TRANSPARENT
+    
 
     def open_drawer(*_):
         page.drawer.open = True
@@ -47,12 +50,13 @@ def app(page: ft.Page):
         page.update()
 
     page.appbar = ft.AppBar(
-            leading=ft.WindowDragArea(ft.IconButton(ft.icons.MENU_ROUNDED, on_click=open_drawer)),
-            title=ft.WindowDragArea(ft.Text("Обычный", max_lines=1)),
+            leading=ft.WindowDragArea(ft.IconButton(ft.icons.MENU_ROUNDED, on_click=open_drawer), maximizable=False),
+            title=ft.WindowDragArea(ft.Text("Обычный", max_lines=1, width=180), maximizable=False),
+            bgcolor=ft.colors.TRANSPARENT,
             actions=[
-                ft.WindowDragArea(ft.IconButton(content=ft.Image(src=get_image_with_thememode('icons/minimize.png'), width=25, height=25), on_click=minimize)),
-                ft.WindowDragArea(ft.IconButton(ft.icons.CLOSE, on_click=lambda *_: page.window_close(), icon_color=ft.colors.WHITE if page.theme_mode == ft.ThemeMode.DARK else ft.colors.BLACK)),
-                ft.WindowDragArea(ft.Container(width=5))
+                ft.WindowDragArea(ft.IconButton(content=ft.Image(src=get_image_with_thememode('icons/minimize.png'), width=25, height=25), on_click=minimize), maximizable=False),
+                ft.WindowDragArea(ft.IconButton(ft.icons.CLOSE, on_click=lambda *_: page.window_close(), icon_color=ft.colors.WHITE if page.theme_mode == ft.ThemeMode.DARK else ft.colors.BLACK), maximizable=False),
+                ft.WindowDragArea(ft.Container(width=5), maximizable=False)
             ]
         )
 
@@ -161,7 +165,7 @@ def app(page: ft.Page):
             DividerText(S("Конвертеры")),
         ],
         on_change=change_page,
-        selected_index=m["page"],
+        selected_index=m["page"]
     )
 
     for i in CONVERTERS:

@@ -31,12 +31,14 @@ def radical(page: ft.Page):
         label=S("n"),
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""),
         on_change=on_change,
+        border_color='primary,0.5'
     )
     a = ft.TextField(
         value=m["pages"]["radical"]["a"],
         label=S("a"),
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9.-]", replacement_string=""),
         on_change=on_change,
+        border_color='primary,0.5'
     )
 
     try:

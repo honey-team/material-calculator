@@ -20,7 +20,7 @@ def simplify(page: ft.Page):
         r.value = check_for_reg(str(simpl(a.value)))
         page.update()
 
-    a = ft.TextField(label="Уравнение")
+    a = ft.TextField(label="Уравнение", border_color='primary,0.5')
     s = ft.FloatingActionButton(icon=ft.icons.CALCULATE, on_click=simplb)
     r = ft.Text("")
 

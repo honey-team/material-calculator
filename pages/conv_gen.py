@@ -37,18 +37,22 @@ def conv_gen(page: ft.Page, fun: Callable[..., dict[str, Any]]):
         value=m["pages"]["converters"][info["mem_name"]]["a"],
         on_change=on_change,
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.-]", replacement_string=""),
+        border_color='primary,0.5'
     )
     r = ft.TextField(
         value=m["pages"]["converters"][info["mem_name"]]["b"],
         on_change=on_change,
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.-]", replacement_string=""),
         read_only=True,
+        border_color='primary,0.5'
     )
     at = ft.Dropdown(
-        options=[ft.dropdown.Option(i, S(i)) for i in info["types"]], on_change=on_change, value=info["types"][get_type("a")]
+        options=[ft.dropdown.Option(i, S(i)) for i in info["types"]], on_change=on_change, value=info["types"][get_type("a")],
+        border_color='primary,0.5'
     )
     bt = ft.Dropdown(
-        options=[ft.dropdown.Option(i, S(i)) for i in info["types"]], on_change=on_change, value=info["types"][get_type("b")]
+        options=[ft.dropdown.Option(i, S(i)) for i in info["types"]], on_change=on_change, value=info["types"][get_type("b")],
+        border_color='primary,0.5'
     )
     page.add(x, at, ft.Divider(thickness=2), r, bt)
 

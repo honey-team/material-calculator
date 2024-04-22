@@ -3,7 +3,7 @@ import json
 import flet as ft
 
 from pages.utils.config import cload, cwrite
-from pages.utils.const import S, get_image_with_thememode
+from pages.utils.const import S, get_image_with_thememode, get_bgcolor_for_window_with_thememode
 from pages.utils.memory import mwrite
 
 
@@ -47,6 +47,7 @@ def settings(page: ft.Page):
             page.theme_mode = ft.ThemeMode.LIGHT
             config["theme"]["mode"] = "light"
             theme_mode.label = "Светлая тема"
+        page.bgcolor = get_bgcolor_for_window_with_thememode(page)
         cwrite(config)
 
         for i in page.drawer.controls:
@@ -113,56 +114,52 @@ def settings(page: ft.Page):
     )
 
     page.add(
-        ft.ListView(
+        ft.Text(S(config["name"]), size=35),
+        ft.Text(S(config["version"]), size=20),
+        space2,
+        ft.Text(S("Темы"), size=25, weight=ft.FontWeight.W_600),
+        space2,
+        theme_mode,
+        ft.Row(
             [
-                ft.Text(S(config["name"]), size=35),
-                ft.Text(S(config["version"]), size=20),
-                space2,
-                ft.Text(S("Темы"), size=25, weight=ft.FontWeight.W_600),
-                space2,
-                theme_mode,
-                ft.Row(
-                    [
-                        ft.ElevatedButton(
-                            style=ft.ButtonStyle(bgcolor=ft.colors.BLUE_300, shape=ft.CircleBorder(), padding=33),
-                            on_click=change_theme_blue,
-                        ),
-                        ft.ElevatedButton(
-                            style=ft.ButtonStyle(bgcolor=ft.colors.RED_300, shape=ft.CircleBorder(), padding=33),
-                            on_click=change_theme_red,
-                        ),
-                        ft.ElevatedButton(
-                            style=ft.ButtonStyle(bgcolor=ft.colors.GREEN_300, shape=ft.CircleBorder(), padding=33),
-                            on_click=change_theme_green,
-                        ),
-                        ft.ElevatedButton(
-                            style=ft.ButtonStyle(bgcolor=ft.colors.AMBER_300, shape=ft.CircleBorder(), padding=33),
-                            on_click=change_theme_amber,
-                        ),
-                    ]
+                ft.ElevatedButton(
+                    style=ft.ButtonStyle(bgcolor=ft.colors.BLUE_300, shape=ft.CircleBorder(), padding=33),
+                    on_click=change_theme_blue,
                 ),
-                ft.Row(
-                    [
-                        ft.ElevatedButton(
-                            style=ft.ButtonStyle(bgcolor=ft.colors.PURPLE_300, shape=ft.CircleBorder(), padding=33),
-                            on_click=change_theme_purple,
-                        )
-                    ]
+                ft.ElevatedButton(
+                    style=ft.ButtonStyle(bgcolor=ft.colors.RED_300, shape=ft.CircleBorder(), padding=33),
+                    on_click=change_theme_red,
                 ),
-                space2,
-                ft.Text(S('Уравнения'), size=25, weight=ft.FontWeight.W_600),
-                space2,
-                ft.Checkbox(label=S('Число в ответе'), value=config['equations']['digits_in_result'], on_change=change_digits_in_result),
-                space2,
-                ft.Text(S("Сброс"), size=25, weight=ft.FontWeight.W_600),
-                space2,
-                ft.FilledTonalButton(S("Сбросить память"), on_click=reset_memory),
-                space,
-                ft.FilledTonalButton(S("Сбросить настройки"), on_click=reset_config),
-                space,
-                ft.FilledTonalButton(S("Сбросить всё"), on_click=reset_all),
+                ft.ElevatedButton(
+                    style=ft.ButtonStyle(bgcolor=ft.colors.GREEN_300, shape=ft.CircleBorder(), padding=33),
+                    on_click=change_theme_green,
+                ),
+                ft.ElevatedButton(
+                    style=ft.ButtonStyle(bgcolor=ft.colors.AMBER_300, shape=ft.CircleBorder(), padding=33),
+                    on_click=change_theme_amber,
+                ),
             ]
-        )
+        ),
+        ft.Row(
+            [
+                ft.ElevatedButton(
+                    style=ft.ButtonStyle(bgcolor=ft.colors.PURPLE_300, shape=ft.CircleBorder(), padding=33),
+                    on_click=change_theme_purple,
+                )
+            ]
+        ),
+        space2,
+        ft.Text(S('Уравнения'), size=25, weight=ft.FontWeight.W_600),
+        space2,
+        ft.Checkbox(label=S('Число в ответе'), value=config['equations']['digits_in_result'], on_change=change_digits_in_result),
+        space2,
+        ft.Text(S("Сброс"), size=25, weight=ft.FontWeight.W_600),
+        space2,
+        ft.FilledTonalButton(S("Сбросить память"), on_click=reset_memory),
+        space,
+        ft.FilledTonalButton(S("Сбросить настройки"), on_click=reset_config),
+        space,
+        ft.FilledTonalButton(S("Сбросить всё"), on_click=reset_all)
     )
 
     return 20

@@ -76,7 +76,7 @@ def equations(page: ft.Page):
         return 445 - width
 
     m = mload()
-    a = ft.TextField(value=m["pages"]["equations"]["a"], label=S("Уравнение"), on_change=update_memory)
+    a = ft.TextField(value=m["pages"]["equations"]["a"], label=S("Уравнение"), on_change=update_memory, border_color='primary,0.5')
     r = ft.Text(value='', size=20)
     
     def copy_all(*_):

@@ -1,4 +1,4 @@
-import json
+import ujson as json
 
 MemoryPath = "memory.json"
 
@@ -11,4 +11,4 @@ def mload() -> dict:
 
 def mwrite(memory: dict):
     with open(MemoryPath, "w", encoding="utf-8") as MemoryFile:
-        MemoryFile.write(json.dumps(memory, skipkeys=True))
+        MemoryFile.write(json.dumps(memory))

@@ -59,18 +59,21 @@ x₂ = {x2}
         on_change=on_change,
         value=m["pages"]["quadratic"]["a"],
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.-]", replacement_string=""),
+        border_color='primary,0.5'
     )
     b = ft.TextField(
         label=S("b"),
         on_change=on_change,
         value=m["pages"]["quadratic"]["b"],
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.-]", replacement_string=""),
+        border_color='primary,0.5'
     )
     c = ft.TextField(
         label=S("c"),
         on_change=on_change,
         value=m["pages"]["quadratic"]["c"],
         input_filter=ft.InputFilter(allow=True, regex_string=r"[0-9,.-]", replacement_string=""),
+        border_color='primary,0.5'
     )
 
     ia = Number(x1) if (x1 := a.value) else 0

@@ -49,8 +49,8 @@ def degrad(page: ft.Page):
         ]
 
     m = mload()
-    d = ft.TextField(value=m["pages"]["degrad"]["d"], label=S("Градусы"), input_filter=INPUT_FILTER, on_change=change_d)
-    r = ft.TextField(value=m["pages"]["degrad"]["r"], label=S("Радианы"), input_filter=INPUT_FILTER, on_change=change_r)
+    d = ft.TextField(value=m["pages"]["degrad"]["d"], label=S("Градусы"), input_filter=INPUT_FILTER, on_change=change_d, border_color='primary,0.5')
+    r = ft.TextField(value=m["pages"]["degrad"]["r"], label=S("Радианы"), input_filter=INPUT_FILTER, on_change=change_r, border_color='primary,0.5')
 
     R = Number(r.value)
     r1 = 140
